@@ -1,10 +1,7 @@
 import 'package:code_brew/src/bloc/BaseBloc.dart';
-import 'package:code_brew/src/bloc/states/base_state.dart';
-import 'package:code_brew/src/bloc/events/base_event.dart';
 import 'package:code_brew/src/models/BaseModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
@@ -35,9 +32,9 @@ class _UIListViewState<T> extends State<UIListView> {
 
   @override
   void initState() {
-    baseBloc = BlocProvider.of<BaseBloc>(context);
-    baseBloc.modellable = widget.model; // TodoModel();
-    baseBloc.add(BaseEvent.loadData());
+//    baseBloc = BlocProvider.of<BaseBloc>(context);
+//    baseBloc.modellable = widget.model; // TodoModel();
+//    baseBloc.add(BaseEvent.loadData());
     super.initState();
   }
 
