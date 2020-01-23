@@ -1,38 +1,46 @@
-
-import 'package:bloc/bloc.dart';
-import 'package:code_brew/src/bloc/states/base_state.dart';
-import 'package:code_brew/src/bloc/events/base_event.dart';
 import 'package:code_brew/src/models/BaseModel.dart';
+import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/repository/Repository.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../models/BaseModel.dart';
 
 ///
 /// project: code_brew
 /// @package: bloc
 /// @author dammyololade <damola@kobo360.com>
 /// created on 2020-01-11
-class BaseBloc extends Bloc<BaseEvent, BaseState>{
+class BaseBloc {
 
+  BaseModel model;
   Repository repository = Repository();
-  BaseModel modellable;
+  PublishSubject<BlocModel> blocController = PublishSubject<BlocModel>();
+  Sink<BlocModel> get inBlocModel => blocController.sink;
+  Stream<BlocModel> get outBlocModel => blocController.stream;
 
-  @override
-  // TODO: implement initialState
-  BaseState get initialState => BaseState.loading();
 
-  @override
-  Stream<BaseState> mapEventToState(BaseEvent event) async*{
-    try {
-      yield BaseState.loading();
-      yield* event.when(
-        refresh: null,
-        loadData: (e) async*{
-          BaseModel data = await repository.fetchData<BaseModel>(modellable, "https://jsonplaceholder.typicode.com/todos");
-          yield BaseState.loaded(data: data);
-        },
-        loadMore: null
-      );
-    } catch (error) {
-      yield BaseState.error(message: error.toString());
+  BaseBloc(this.model);
+
+  void add(BlocEvent event) async{
+    switch(event) {
+      case BlocEvent.fetch:
+        fetchData();
+        break;
+      case BlocEvent.refresh:
+        //inBlocModel.add(BlocModel(state: BlocState.loading));
+        fetchData();
+        break;
+      case BlocEvent.loadMore:
+        break;
     }
+  }
+
+  void fetchData() async{
+    BaseModel data = await repository.fetchData<BaseModel>(model, "https://jsonplaceholder.typicode.com/todos");
+    inBlocModel.add(BlocModel(data: data, state: BlocState.dataLoaded));
+  }
+
+  void dispose() {
+    blocController.close();
   }
 }
