@@ -10,6 +10,6 @@ abstract class BaseModel<T> {
   T data;
   int total, currentPage;
 
-  fromJson(List data);
+  fromJson(Map<String, dynamic> data);
 
 }

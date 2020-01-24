@@ -23,5 +23,6 @@ enum BlocState {
 enum BlocEvent {
   fetch,
   refresh,
-  loadMore
+  loadMore,
+  search,
 }
