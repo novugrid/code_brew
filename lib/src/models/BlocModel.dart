@@ -3,7 +3,7 @@ import 'BaseModel.dart';
 ///
 /// project: code_brew
 /// @package: 
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
 class BlocModel<T extends BaseModel> {
   T data;

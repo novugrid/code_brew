@@ -1,8 +1,9 @@
+
 import 'package:code_brew/code_brew.dart';
 ///
 /// project: code_brew
 /// @package: 
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
 
 class UserModel extends BaseModel{

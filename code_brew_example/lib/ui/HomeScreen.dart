@@ -1,11 +1,11 @@
+import 'package:code_brew_example/ui/DashboardScreen.dart';
 import 'package:code_brew_example/ui/list/UserListScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 ///
 /// project: code_brew
 /// @package:
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,10 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     widgets = [
-      randomWidget("Home"),
+      DashboardScreen(),
       UserListScreen(),
       randomWidget("Notifications"),
-       randomWidget("Profile"),
+      randomWidget("Profile"),
     ];
     super.initState();
   }
