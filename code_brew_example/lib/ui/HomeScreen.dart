@@ -1,6 +1,8 @@
-import 'package:code_brew_example/ui/list/UserListScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'list/UserListScreen.dart';
+import 'UIWidgetsListScreen.dart';
 
 ///
 /// project: code_brew
@@ -21,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     widgets = [
-      randomWidget("Home"),
+      UIWidgetsListScreen(),
       UserListScreen(),
       randomWidget("Notifications"),
        randomWidget("Profile"),

@@ -12,6 +12,10 @@ dependencies:
     sdk: flutter
   dio: ^3.0.8
   rxdart: ^0.23.1
+  the_validator:
+    git:
+      url: git://github.com/culjo/the_validator.git
+      # path: ../the_validator
 
 dev_dependencies:
   flutter_test:

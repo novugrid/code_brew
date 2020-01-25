@@ -1,4 +1,4 @@
-import 'package:code_brew_example/models/UserModel.dart';
+import '../../models/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:code_brew/code_brew.dart';
 
