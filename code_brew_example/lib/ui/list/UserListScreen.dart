@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 /// @package:
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
+// ignore: must_be_immutable
 class UserListScreen extends StatelessWidget {
   String url = "http://5e29f02192edd600140de156.mockapi.io/v1/users";
 

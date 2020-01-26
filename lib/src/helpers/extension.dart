@@ -8,11 +8,3 @@ extension StringExtension on String {
   /// checks if a string is null or empty
   bool get isNullOrEmpty => this == null || this.isEmpty;
 }
-
-class Str {
-  String dart = "2";
-
-  Str() {
-    dart.isNullOrEmpty;
-  }
-}
