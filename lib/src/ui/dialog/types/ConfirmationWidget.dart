@@ -29,53 +29,62 @@ class ConfirmationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 20),
-          icon,
-          if (!title.isNullOrEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: Text(
-                title,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-              ),
-            ),
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 20),
+        //icon,
+        if (!title.isNullOrEmpty)
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: Text(
-                  message,
-                  textAlign: TextAlign.center,
-                ))
-              ],
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: Text(
+              title,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
             ),
           ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: Row(
             children: <Widget>[
               Expanded(
-                  child: DialogNegButton(
-                text: "Cancel",
-                onNegativeBtnClicked: onNegativeBtnClicked,
-              )),
-              Expanded(
-                  child: DialogPositiveButton(
-                text: "Submit",
-                onPositiveBtnClicked: onPositiveBtnClicked,
-                backgroundColor: Theme.of(context).primaryColor,
-                textStyle: TextStyle(color: Colors.white),
-              )),
+                  child: Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black38,
+                    ),
+                  ))
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Row(
+          children: <Widget>[
+            Expanded(
+                child: DialogNegButton(
+                  text: "Cancel",
+                  onNegativeBtnClicked: onNegativeBtnClicked,
+                )),
+            Container(
+              color: Color(0xffE0E0E0).withOpacity(0.2),
+              width: 1,
+              height: 60,
+            ),
+            Expanded(
+                child: DialogPositiveButton(
+                  text: "Submit",
+                  onPositiveBtnClicked: onPositiveBtnClicked,
+                  backgroundColor: Colors.transparent,
+                  textStyle: TextStyle(color: Theme
+                      .of(context)
+                      .primaryColor),
+                )),
+          ],
+        )
+      ],
     );
   }
 }
