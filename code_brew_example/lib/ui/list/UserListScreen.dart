@@ -8,7 +8,8 @@ import 'package:code_brew/code_brew.dart';
 /// @author dammyololade <damola@kobo360.com>
 /// created on 2020-01-23
 class UserListScreen extends StatelessWidget {
-  String url = "http://5e29f02192edd600140de156.mockapi.io/v1/users";
+
+  final String url = "http://5e29f02192edd600140de156.mockapi.io/v1/users";
 
   @override
   Widget build(BuildContext context) {
