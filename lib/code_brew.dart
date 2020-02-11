@@ -6,6 +6,7 @@ export 'src/ui/UIListView.dart';
 export 'src/ui/app_bars/FlatAppbar.dart';
 export 'src/ui/search_widgets/UISearchBar.dart';
 export 'src/ui/search_widgets/UISearch.dart';
+export 'src/ui/theme/CodeBrewTheme.dart';
 
 /// A Calculator.
 class Calculator {
