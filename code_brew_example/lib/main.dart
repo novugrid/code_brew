@@ -1,4 +1,7 @@
 import 'package:code_brew_example/ui/HomeScreen.dart';
+import 'package:code_brew_example/ui/UIRoutes.dart';
+import 'package:code_brew_example/ui/features/ImagesExamples.dart';
+import 'package:code_brew_example/ui/features/forms/FormsWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:code_brew/code_brew.dart';
 
@@ -11,7 +14,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: CodeBrewTheme.green(),
-      home: HomeScreen(),
+//      home: HomeScreen(),
+      initialRoute: '/home',
+      routes: {
+        UIRoutes.home: (context) => HomeScreen(),
+        UIRoutes.formsWidgetScreen: (context) => FormsWidgetScreen(),
+        UIRoutes.imagesWidgetScreen: (context) => ImagesExamples(),
+      },
     );
   }
 }

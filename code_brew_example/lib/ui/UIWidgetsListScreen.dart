@@ -1,3 +1,4 @@
+import 'package:code_brew_example/ui/UIRoutes.dart';
 import 'package:flutter/material.dart';
 
 class UIWidgetsListScreen extends StatefulWidget {
@@ -14,10 +15,14 @@ class _UIWidgetsListScreenState extends State<UIWidgetsListScreen> {
       ),
       body: ListView(
         children: <Widget>[
+
           ListTile(
             title: Text("Forms"),
-            onTap: (){
-            },
+            onTap: (){ UIRoutes.navigateToFormsScreen(context); },
+          ),
+          ListTile(
+            title: Text("Images"),
+            onTap: (){ UIRoutes.navigateToImagesScreen(context); },
           ),
 
         ],

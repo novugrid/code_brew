@@ -16,6 +16,9 @@ dependencies:
     git:
       url: git://github.com/culjo/the_validator.git
       # path: ../the_validator
+  country_code_picker: ^1.2.4
+  image_picker: ^0.6.3+1
+
 
 dev_dependencies:
   flutter_test:

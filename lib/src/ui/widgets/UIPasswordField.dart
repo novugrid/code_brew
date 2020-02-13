@@ -20,7 +20,7 @@ class _UIPasswordField extends State<UIPasswordField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.passwordController,
-      autovalidate: widget.passwordController.text.isNotEmpty,
+      autovalidate: widget.passwordController != null ? widget.passwordController.text.isNotEmpty : false,
       decoration: InputDecoration(
         hintText: "Password",
         // errorText: passwordFieldError,
