@@ -12,11 +12,13 @@ class UIProfileImage extends StatefulWidget {
 }
 
 class _UIProfileImageState extends State<UIProfileImage> {
-  File imageFile;
+  // File imageFile;
+  ValueNotifier<File> imageFileNotifier = ValueNotifier(null);
 
   @override
   void initState() {
     super.initState();
+
   }
 
   void pickImage() async {
@@ -32,10 +34,10 @@ class _UIProfileImageState extends State<UIProfileImage> {
     if (uiImageChooser != null) {
       switch (uiImageChooser) {
         case UIImageChooser.GALLERY:
-            imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+            imageFileNotifier.value = await ImagePicker.pickImage(source: ImageSource.gallery);
           break;
         case UIImageChooser.CAMERA:
-            imageFile = await ImagePicker.pickImage(source: ImageSource.camera);
+            imageFileNotifier.value = await ImagePicker.pickImage(source: ImageSource.camera);
           break;
       }
       setState(() {
@@ -55,7 +57,14 @@ class _UIProfileImageState extends State<UIProfileImage> {
           width: 100,
           height: 100,
           decoration: BoxDecoration(color: Colors.grey),
-          child: imageFile != null ? Image.file(imageFile) : Container(),
+          child: ValueListenableBuilder(valueListenable: imageFileNotifier, builder: (BuildContext context, File value, Widget child) {
+
+            return value != null ? Image.file(value) : Container();
+//            return Container();
+
+          })
+
+
         ),
       ),
     );
