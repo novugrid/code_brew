@@ -24,7 +24,9 @@ class _FormsWidgetsScreenState extends State<FormsWidgetScreen> {
               Container(
                 child: UIPhoneNumberField(),
               ),
-
+              Container(
+                child: UIDropdown(),
+              ),
 
               RaisedButton(
                 onPressed: () {},
