@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:code_brew/src/uiservices/PinTextInputFormatter.dart';
 
-
 class UIPinField extends StatefulWidget {
   final int boxes;
   final ValueChanged<String> onPinComplete;
   final ValueChanged<String> onPinEntered;
+  final bool focusOnEnter;
 
-  UIPinField({this.boxes = 4, this.onPinComplete, this.onPinEntered});
+  UIPinField(
+      {this.boxes = 4,
+      this.focusOnEnter = true,
+      this.onPinComplete,
+      this.onPinEntered});
 
   @override
   _UIPinFieldState createState() => _UIPinFieldState();
 }
 
 class _UIPinFieldState extends State<UIPinField> {
-
   List<TextEditingController> textEditingControllers = [];
   List<FocusNode> focusNodes = [];
 
@@ -26,8 +29,6 @@ class _UIPinFieldState extends State<UIPinField> {
   void initState() {
     super.initState();
 
-    // pin = List(widget.boxes);
-
     for (int i = 0; i < widget.boxes; i++) {
       focusNodes.add(FocusNode());
       textEditingControllers.add(TextEditingController());
@@ -35,7 +36,9 @@ class _UIPinFieldState extends State<UIPinField> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(focusNodes[0]);
+      if (widget.focusOnEnter) {
+        FocusScope.of(context).requestFocus(focusNodes[0]);
+      }
     });
   }
 
@@ -110,14 +113,16 @@ class _UIPinFieldState extends State<UIPinField> {
           ),
           textAlign: TextAlign.center,
           inputFormatters: [
-            PinTextInputFormatter(maxLength: 1, onNewCharacterEntered: (newValue) {
-              print("Future Value is: $newValue");
-              this.jumpToNextPinBox(newValue);
-            }),
+            PinTextInputFormatter(
+                maxLength: 1,
+                onNewCharacterEntered: (newValue) {
+                  print("Future Value is: $newValue");
+                  this.jumpToNextPinBox(newValue);
+                }),
           ],
 //          inputFormatters: [PinTextInputFormatter(), LengthLimitingTextInputFormatter(1)],
           keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: false),
+              TextInputType.numberWithOptions(signed: false, decimal: false),
           onChanged: (val) {
             print("Onchanged Val - $val");
             // Note: The onchange can only be called
@@ -175,7 +180,6 @@ class _UIPinFieldState extends State<UIPinField> {
       // Check for the end here
       if (pin.length >= widget.boxes) {
         if (widget.onPinComplete != null) {
-
           print("COMPLETE PIN --- current focus : $currentFocusBoxIndex");
 
           // Bug Alert:(Lekan) - the keyboard not auto closing while navigating off the screen
@@ -193,5 +197,4 @@ class _UIPinFieldState extends State<UIPinField> {
   void focusOn(int position) {
     FocusScope.of(context).requestFocus(focusNodes[position]);
   }
-
 }

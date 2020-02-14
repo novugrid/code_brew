@@ -59,7 +59,7 @@ class _FormsWidgetsScreenState extends State<FormsWidgetScreen> {
                 Divider(),
                 Text("Pin Field"),
 
-                UIPinField(onPinComplete: (pin) {
+                UIPinField(focusOnEnter: false, onPinComplete: (pin) {
                   print("Pin Complete: $pin");
                 },),
 
