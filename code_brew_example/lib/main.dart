@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: CodeBrewTheme.green(),
+      theme: CodeBrewTheme.purple(),
 //      home: HomeScreen(),
       initialRoute: '/home',
       routes: {

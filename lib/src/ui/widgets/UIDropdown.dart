@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
 
-class UIDropdown extends StatefulWidget {
+class UIDropdown<T> extends StatefulWidget {
+
+  final List<T> items;
+  final T initialValue;
+  final Widget Function(BuildContext context, T item) builder;
+
+  UIDropdown(this.items, {@required this.initialValue, @required this.builder}): assert(items != null);
+
   @override
-  _UIDropdownState createState() => _UIDropdownState();
+  _UIDropdownState createState() => _UIDropdownState<T>();
 }
 
-class _UIDropdownState extends State<UIDropdown> {
-  String dropdownValue = 'One';
+class _UIDropdownState<T> extends State<UIDropdown<T>> {
+
+  T dropdownValue;
+  // List<T> items;
+
+  @override
+  void initState() {
+    super.initState();
+    dropdownValue = widget.initialValue;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
+    return DropdownButton<T>(
       value: dropdownValue,
-      icon: Icon(Icons.arrow_downward),
+      icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
       elevation: 16,
       style: TextStyle(color: Colors.deepPurple),
@@ -20,16 +35,16 @@ class _UIDropdownState extends State<UIDropdown> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (String newValue) {
+      onChanged: (T newValue) {
         setState(() {
           dropdownValue = newValue;
         });
       },
-      items: <String>['One', 'Two', 'Free', 'Four']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
+      items: widget.items
+          .map<DropdownMenuItem<T>>((T value) {
+        return DropdownMenuItem<T>(
           value: value,
-          child: Text(value),
+          child: widget.builder(context, value),
         );
       }).toList(),
     );
