@@ -9,7 +9,7 @@ import '../models/BaseModel.dart';
 ///
 /// project: code_brew
 /// @package: bloc
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-11
 class BaseBloc {
 

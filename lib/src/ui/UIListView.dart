@@ -7,12 +7,13 @@ import 'package:code_brew/src/ui/list/smart_refresher/indicator/material_indicat
 import 'package:code_brew/src/ui/list/smart_refresher/smart_refresher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../bloc/BaseBloc.dart';
 
 ///A wonder ful
 /// project: test_stuff
 /// @package: ui
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-11
 class UIListView<T> extends StatefulWidget {
   Widget Function(BuildContext context, dynamic data) itemBuilder;

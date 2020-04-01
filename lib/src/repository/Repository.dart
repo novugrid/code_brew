@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:code_brew/src/models/BaseModel.dart';
 import 'package:dio/dio.dart';
 
 ///
 /// project: code_brew
 /// @package: repository
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-10
 class Repository {
 
