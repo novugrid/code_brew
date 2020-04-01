@@ -4,8 +4,10 @@ export 'package:code_brew/src/ui/dialog/UIDialog.dart';
 export 'package:code_brew/src/ui/dialog/dialog_buttons/DialogPositiveButton.dart';
 export 'package:code_brew/src/ui/dialog/dialog_enum.dart';
 
+export 'src/database/CBSessionManager.dart';
+export 'src/helpers/CBUtility.dart';
 export 'src/helpers/extension.dart';
-export 'src/models/BaseModel.dart';
+export 'src/models/CBBaseModel.dart';
 export 'src/models/UrlModel.dart';
 export 'src/network/NetworkUtil.dart';
 export 'src/ui/UIListView.dart';

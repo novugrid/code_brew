@@ -1,4 +1,4 @@
-import 'package:code_brew/src/models/BaseModel.dart';
+import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:dio/dio.dart';
 
 ///
@@ -18,7 +18,7 @@ class Repository {
     return dio;
   }
 
-  Future<T> fetchData<T>(BaseModel modellAble, String url) async{
+  Future<T> fetchData<T>(CBBaseModel modellAble, String url) async {
     T model; // should
     try {
       var response  = await getDio().get(url);

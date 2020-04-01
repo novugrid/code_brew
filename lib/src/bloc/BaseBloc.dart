@@ -4,7 +4,7 @@ import 'package:code_brew/src/models/UrlModel.dart';
 import 'package:code_brew/src/repository/Repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/BaseModel.dart';
+import '../models/CBBaseModel.dart';
 
 ///
 /// project: code_brew

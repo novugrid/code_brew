@@ -1,3 +1,4 @@
+import 'package:code_brew/src/network/CBRequestInterceptor.dart';
 import 'package:dio/dio.dart';
 
 ///
@@ -6,11 +7,13 @@ import 'package:dio/dio.dart';
 /// @author dammyololade <damola@kobo360.com>
 /// created on 31/03/2020
 class NetworkUtil {
-  Dio getDioInstance() {
-    return Dio(BaseOptions(
+  Dio _getDioInstance() {
+    var dio = Dio(BaseOptions(
       connectTimeout: 30000,
       receiveTimeout: 30000,
     ));
+    dio.interceptors.add(CBRequestInterceptor());
+    return dio;
   }
 
   Future<Response> connectApi(String url, RequestMethod method,
@@ -20,22 +23,25 @@ class NetworkUtil {
       switch (method) {
         case RequestMethod.get:
           response =
-              await getDioInstance().get(url, queryParameters: queryParams);
+          await _getDioInstance().get(url, queryParameters: queryParams);
           break;
         case RequestMethod.post:
-          response = await getDioInstance()
+          response = await _getDioInstance()
               .post(url, data: data, queryParameters: queryParams);
           break;
         case RequestMethod.put:
-          response = await getDioInstance()
+          response = await _getDioInstance()
               .put(url, data: data, queryParameters: queryParams);
           break;
         case RequestMethod.delete:
           response =
-              await getDioInstance().delete(url, queryParameters: queryParams);
+          await _getDioInstance().delete(url, queryParameters: queryParams);
           break;
       }
-    } on DioError catch (e) {
+    } on DioError catch (e, stackTace) {
+      print("see error here");
+      print(e);
+      print(stackTace);
       response = e.response;
     }
 
