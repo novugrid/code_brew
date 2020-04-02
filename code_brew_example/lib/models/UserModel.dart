@@ -6,7 +6,7 @@ import 'package:code_brew/code_brew.dart';
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
 
-class UserModel extends BaseModel{
+class UserModel extends CBBaseModel{
   UserData userData;
   bool success;
 

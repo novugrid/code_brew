@@ -1,4 +1,4 @@
-import 'package:code_brew/src/models/BaseModel.dart';
+import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/UrlModel.dart';
 import 'package:code_brew/src/repository/Repository.dart';
@@ -13,7 +13,7 @@ import '../models/CBBaseModel.dart';
 /// created on 2020-01-11
 class BaseBloc {
 
-  BaseModel model;
+  CBBaseModel model;
   Repository repository = Repository();
   PublishSubject<BlocModel> blocController = PublishSubject<BlocModel>();
   Sink<BlocModel> get inBlocModel => blocController.sink;
@@ -49,12 +49,12 @@ class BaseBloc {
   void search(String searchTerm) async{
     currentEvent = BlocEvent.search;
     urlModel.page = 1;
-    BaseModel data = await repository.fetchData<BaseModel>(model, urlModel.toUrl(searchTerm: searchTerm));
+    CBBaseModel data = await repository.fetchData<CBBaseModel>(model, urlModel.toUrl(searchTerm: searchTerm));
     inBlocModel.add(BlocModel(data: data, state: currentState, event: currentEvent));
   }
 
   void fetchData() async{
-    BaseModel data = await repository.fetchData<BaseModel>(model, urlModel.toUrl());
+    CBBaseModel data = await repository.fetchData<CBBaseModel>(model, urlModel.toUrl());
     inBlocModel.add(BlocModel(data: data, state: currentState, event: currentEvent));
   }
 
