@@ -92,7 +92,7 @@ class _UIListViewState<T> extends State<UIListView> {
                       return SmartRefresher(
                         controller: _controller,
                         enablePullDown: true,
-                        enablePullUp: items.length < model.total,
+                        enablePullUp: items.length < model.data.total,
                         onRefresh: () {
                           items = [];
                           baseBloc.add(BlocEvent.refresh);
@@ -164,7 +164,7 @@ class _UIListViewState<T> extends State<UIListView> {
 
   int getItemCount(CBBaseModel model) {
     if (model.data is List) {
-      return model.data.length;
+      return model.data.total;
     }
 //    if (data is Map)
     return 0;
