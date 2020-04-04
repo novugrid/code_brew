@@ -20,15 +20,14 @@ class DialogPositiveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return FlatButton(
       child: Text(
         text,
         style: textStyle,
       ),
       onPressed: onPositiveBtnClicked,
       color: backgroundColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5))),
+      padding: EdgeInsets.symmetric(vertical: 20),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/bloc/BaseBloc.dart';
-import 'package:code_brew/src/models/BaseModel.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
+import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/indicator/classic_indicator.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/indicator/material_indicator.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/smart_refresher.dart';
@@ -17,7 +17,7 @@ import '../bloc/BaseBloc.dart';
 /// created on 2020-01-11
 class UIListView<T> extends StatefulWidget {
   Widget Function(BuildContext context, dynamic data) itemBuilder;
-  BaseModel model;
+  CBBaseModel model;
   UrlModel urlModel;
   bool searchable;
 
@@ -43,7 +43,7 @@ class _UIListViewState<T> extends State<UIListView> {
   ValueNotifier<bool> moreLoadingNotifier = ValueNotifier(false);
   List items = [];
   RefreshController _controller = RefreshController();
-  BaseModel model;
+  CBBaseModel model;
 
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _UIListViewState<T> extends State<UIListView> {
                       return SmartRefresher(
                         controller: _controller,
                         enablePullDown: true,
-                        enablePullUp: items.length < model.total,
+                        enablePullUp: items.length < model.data.total,
                         onRefresh: () {
                           items = [];
                           baseBloc.add(BlocEvent.refresh);
@@ -138,7 +138,7 @@ class _UIListViewState<T> extends State<UIListView> {
     );
   }
 
-  void setItems(BaseModel model) {
+  void setItems(CBBaseModel model) {
     try {
       items.addAll(model.data as List);
     } catch (err) {
@@ -162,9 +162,9 @@ class _UIListViewState<T> extends State<UIListView> {
     }
   }
 
-  int getItemCount(BaseModel model) {
+  int getItemCount(CBBaseModel model) {
     if (model.data is List) {
-      return model.data.length;
+      return model.data.total;
     }
 //    if (data is Map)
     return 0;
