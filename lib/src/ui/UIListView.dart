@@ -17,7 +17,7 @@ import '../bloc/BaseBloc.dart';
 /// created on 2020-01-11
 class UIListView<T> extends StatefulWidget {
   Widget Function(BuildContext context, dynamic data) itemBuilder;
-  CBBaseModel model;
+  PaginatedDataModel model;
   UrlModel urlModel;
   bool searchable;
 
@@ -43,7 +43,7 @@ class _UIListViewState<T> extends State<UIListView> {
   ValueNotifier<bool> moreLoadingNotifier = ValueNotifier(false);
   List items = [];
   RefreshController _controller = RefreshController();
-  CBBaseModel model;
+  PaginatedDataModel model;
 
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _UIListViewState<T> extends State<UIListView> {
                       return SmartRefresher(
                         controller: _controller,
                         enablePullDown: true,
-                        enablePullUp: items.length < model.data.total,
+                        enablePullUp: items.length < model.total,
                         onRefresh: () {
                           items = [];
                           baseBloc.add(BlocEvent.refresh);
@@ -138,9 +138,9 @@ class _UIListViewState<T> extends State<UIListView> {
     );
   }
 
-  void setItems(CBBaseModel model) {
+  void setItems(PaginatedDataModel model) {
     try {
-      items.addAll(model.data as List);
+      items.addAll(model.data);
     } catch (err) {
 
     }

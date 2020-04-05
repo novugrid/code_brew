@@ -1,3 +1,5 @@
+import 'package:code_brew/code_brew.dart';
+
 import 'CBBaseModel.dart';
 
 ///
@@ -5,7 +7,7 @@ import 'CBBaseModel.dart';
 /// @package: 
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
-class BlocModel<T extends CBBaseModel> {
+class BlocModel<T extends PaginatedDataModel> {
   T data;
   BlocState state;
   BlocEvent event;
@@ -17,7 +19,8 @@ class BlocModel<T extends CBBaseModel> {
 enum BlocState {
   loading,
   dataLoaded,
-  error
+  error,
+  loadingMoreData,
 }
 
 enum BlocEvent {
@@ -25,4 +28,5 @@ enum BlocEvent {
   refresh,
   loadMore,
   search,
+  loadPrevious,
 }
