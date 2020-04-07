@@ -11,13 +11,16 @@ class DialogNegButton extends StatelessWidget {
   String text;
   TextStyle textStyle;
 
-  DialogNegButton(
-      {@required this.text, this.onNegativeBtnClicked, this.textStyle});
+  DialogNegButton({@required this.text,
+    this.onNegativeBtnClicked,
+    this.textStyle
+  });
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: onNegativeBtnClicked,
+      padding: EdgeInsets.symmetric(vertical: 20),
       child: Text(
         text,
         style: textStyle,

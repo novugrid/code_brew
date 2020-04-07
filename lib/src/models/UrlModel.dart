@@ -43,10 +43,11 @@ class UrlModel {
   /// build the url into a string
   String toUrl({String searchTerm}) {
     String url = searchTerm != null ? "$searchUrl?$searchKey=$searchTerm" :
-        baseUrl;
+        "$baseUrl/?";
     if (limit != null && limit != 0) {
-      url += "?page=$page&limit=$limit";
+      url += "&page=$page&limit=$limit";
     }
+    print("url sent: $url");
     return url;
   }
 }
