@@ -4,7 +4,7 @@
 /// @author: dammyololade
 /// created on: 04/04/2020
 abstract class PaginatedDataModel<T> {
-  int total, currentPage, nextPage, previousPage, limit;
+  int total, currentPage, nextPage, previousPage, limit, totalPage;
   List<T> data;
   String message;
   bool success;
@@ -14,8 +14,12 @@ abstract class PaginatedDataModel<T> {
     currentPage = data["data"]["current_page"];
     nextPage = data["data"]["next_page"];
     previousPage = data["data"]["previous_page"];
+    totalPage = data["data"]["total_page"];
     limit = data["data"]["limit"];
     message = data["message"];
     success = data["success"];
+    if(totalPage == null){
+      totalPage = (total / limit).round();
+    }
   }
 }

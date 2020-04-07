@@ -1,3 +1,4 @@
+import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:code_brew/src/models/UrlModel.dart';
@@ -12,7 +13,7 @@ import '../models/CBBaseModel.dart';
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-11
 class BaseBloc {
-  CBBaseModel model;
+  PaginatedDataModel model;
   Repository repository = Repository();
   PublishSubject<BlocModel> blocController = PublishSubject<BlocModel>();
 
@@ -38,10 +39,20 @@ class BaseBloc {
         break;
       case BlocEvent.loadMore:
         urlModel.page++;
+        currentState = BlocState.loadingMoreData;
+        inBlocModel.add(
+            BlocModel(data: model, state: currentState, event: currentEvent));
         fetchData();
         break;
       case BlocEvent.search:
-        // TODO: Handle this case.
+
+        break;
+      case BlocEvent.loadPrevious:
+        urlModel.page--;
+        currentState = BlocState.loadingMoreData;
+        inBlocModel.add(
+            BlocModel(data: model, state: currentState, event: currentEvent));
+        fetchData();
         break;
     }
   }
@@ -49,17 +60,18 @@ class BaseBloc {
   void search(String searchTerm) async {
     currentEvent = BlocEvent.search;
     urlModel.page = 1;
-    CBBaseModel data = await repository.fetchData<CBBaseModel>(
+    PaginatedDataModel data = await repository.fetchData<PaginatedDataModel>(
         model, urlModel.toUrl(searchTerm: searchTerm));
     inBlocModel
         .add(BlocModel(data: data, state: currentState, event: currentEvent));
   }
 
   void fetchData() async {
-    CBBaseModel data =
-    await repository.fetchData<CBBaseModel>(model, urlModel.toUrl());
+    model =
+        await repository.fetchData<PaginatedDataModel>(model, urlModel.toUrl());
+    currentState = BlocState.dataLoaded;
     inBlocModel
-        .add(BlocModel(data: data, state: currentState, event: currentEvent));
+        .add(BlocModel(data: model, state: currentState, event: currentEvent));
   }
 
   void dispose() {

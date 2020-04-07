@@ -1,3 +1,4 @@
+import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/bloc/BaseBloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/CBBaseModel.dart';
@@ -14,9 +15,15 @@ import 'list/smart_refresher/smart_refresher.dart';
 
 class CBDataTable extends StatefulWidget {
   List<DataRow> Function(BuildContext context, dynamic data) rowItemBuilder;
-  CBBaseModel model;
+  PaginatedDataModel model;
   UrlModel urlModel;
   List<DataColumn> headers;
+
+  CBDataTable(
+      {@required this.headers,
+      @required this.urlModel,
+      @required this.model,
+      @required this.rowItemBuilder});
 
   @override
   State<StatefulWidget> createState() {
@@ -26,17 +33,22 @@ class CBDataTable extends StatefulWidget {
 
 class _CBDataTableState extends State<CBDataTable> {
   BaseBloc baseBloc;
-  var searchController = TextEditingController();
+  var _searchController = TextEditingController();
   String currentSearch = "";
   List items = [];
   RefreshController _controller = RefreshController();
-  CBBaseModel model;
+  PaginatedDataModel model;
 
   @override
   void initState() {
     baseBloc = BaseBloc(widget.model, widget.urlModel);
     baseBloc.add(BlocEvent.fetch);
-    //searchController.addListener(onSearch);
+    _searchController.addListener((){
+      if(_searchController.text != currentSearch) {
+        currentSearch = _searchController.text;
+        baseBloc.search(currentSearch);
+      }
+    });
     super.initState();
   }
 
@@ -44,6 +56,41 @@ class _CBDataTableState extends State<CBDataTable> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              height: 50,
+              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+              width: 300,
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: "Search",
+                  focusedBorder:  OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.lightBlue, width: 1)),
+                  border:
+                      OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color(0xffB7B7B7), width: 1)),
+                  enabledBorder:
+                      OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color(0xffB7B7B7), width: 1)),
+                  suffixIcon: Icon(Icons.search),
+                  errorBorder: InputBorder.none,
+                ),
+                style: TextStyle(
+                  fontFamily: "ARoman",
+                  fontSize: 14
+                ),
+              ),
+            )
+          ],
+        ),
+
         Expanded(
             child: StreamBuilder(
                 stream: baseBloc.outBlocModel,
@@ -58,9 +105,74 @@ class _CBDataTableState extends State<CBDataTable> {
                     case ConnectionState.active:
                     case ConnectionState.done:
                       model = snapshot.data.data;
-                      return DataTable(
-                          columns: widget.headers,
-                          rows: _buildDataRow(model.data));
+                      return Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: DataTable(
+                                      showCheckboxColumn: false,
+                                      columns: widget.headers,
+                                      rows: _buildDataRow(model)),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            if (snapshot.data.state !=
+                                BlocState.loadingMoreData)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Colors.grey.withOpacity( model.previousPage < 1 ? .5 : .9),
+                                        size: 18,
+                                      ),
+                                      onPressed: model.previousPage < 1
+                                          ? null
+                                          : () {
+                                              baseBloc
+                                                  .add(BlocEvent.loadPrevious);
+                                            }),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Text(
+                                      "${model.currentPage} of ${model.totalPage}",
+                                      style: TextStyle(
+                                          fontFamily: "ABook", fontSize: 14),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.grey,
+                                        size: 18,
+                                      ),
+
+                                      ///todo we need to add totalpages to the response
+                                      onPressed: model.currentPage ==
+                                              model.nextPage
+                                          ? null
+                                          : () {
+                                              baseBloc.add(BlocEvent.loadMore);
+                                            }),
+                                ],
+                              )
+                            else
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[CircularProgressIndicator()],
+                              ),
+                            SizedBox(height: 10,),
+                          ],
+                        ),
+                      );
                   }
                 }))
       ],
@@ -69,21 +181,6 @@ class _CBDataTableState extends State<CBDataTable> {
 
   List<DataRow> _buildDataRow(dynamic data) {
     return widget.rowItemBuilder(context, data);
-  }
-
-  void _handleBlocEvent(BlocEvent event) {
-    switch (event) {
-      case BlocEvent.fetch:
-        break;
-      case BlocEvent.refresh:
-        _controller.refreshCompleted();
-        break;
-      case BlocEvent.loadMore:
-        _controller.loadComplete();
-        break;
-      case BlocEvent.search:
-        break;
-    }
   }
 
   @override

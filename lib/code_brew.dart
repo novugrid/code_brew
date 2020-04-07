@@ -16,6 +16,7 @@ export 'src/ui/UiKits.dart';
 export 'src/ui/app_bars/FlatAppbar.dart';
 export 'src/ui/search_widgets/UISearch.dart';
 export 'src/ui/search_widgets/UISearchBar.dart';
+export 'src/ui/CBDataTable.dart';
 
 /// A Calculator.
 class Calculator {
