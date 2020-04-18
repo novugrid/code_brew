@@ -152,8 +152,8 @@ class BigDialog extends StatelessWidget {
           label =
               semanticLabel ?? MaterialLocalizations.of(context)?.dialogLabel;
           break;
-        case TargetPlatform.macOS:
-          break;
+        // case TargetPlatform.macOS:
+        //  break;
       }
     }
 

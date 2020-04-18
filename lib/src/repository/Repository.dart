@@ -29,6 +29,7 @@ class Repository {
       }
     } catch (error) {
       print("an error has occured $error");
+      // Future.error(error)
     }
     return model;
   }

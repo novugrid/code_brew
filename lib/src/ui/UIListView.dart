@@ -159,6 +159,8 @@ class _UIListViewState<T> extends State<UIListView> {
       case BlocEvent.search:
         showSearchLoading.value = false;
         break;
+      default:
+        break;
     }
   }
 
