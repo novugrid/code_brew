@@ -1,5 +1,6 @@
 import 'package:code_brew/code_brew.dart';
 import 'package:code_brew_example/models/UserModel.dart';
+import '../../models/UserModel.dart';
 import 'package:flutter/material.dart';
 
 /// A simple searchable list that uses code_brew UIList
@@ -9,7 +10,8 @@ import 'package:flutter/material.dart';
 /// created on 2020-01-23
 // ignore: must_be_immutable
 class UserListScreen extends StatelessWidget {
-  String url = "http://5e29f02192edd600140de156.mockapi.io/v1/users";
+
+  final String url = "http://5e29f02192edd600140de156.mockapi.io/v1/users";
 
   @override
   Widget build(BuildContext context) {
@@ -51,39 +53,39 @@ class UserListScreen extends StatelessWidget {
               ),
               Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "${user.name}",
-                        style: TextStyle(fontSize: 16,
-                            fontWeight: FontWeight.w500
-                        ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "${user.name}",
+                    style: TextStyle(fontSize: 16,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: <Widget>[Expanded(child: Text(
+                        "${user.address}",
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300
+                      ),)
+                    )],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: <Widget>[Expanded(child: Text("${user.email}",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w300
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: <Widget>[Expanded(child: Text(
-                          "${user.address}",
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w300
-                          ),)
-                        )],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: <Widget>[Expanded(child: Text("${user.email}",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300
-                          ),
-                        ))],
-                      ),
-                    ],
-                  )),
+                    ))],
+                  ),
+                ],
+              )),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 /// @package:
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
+///
 class FlatAppbar extends StatefulWidget implements PreferredSizeWidget{
   String title;
   Color backgroundColor;
