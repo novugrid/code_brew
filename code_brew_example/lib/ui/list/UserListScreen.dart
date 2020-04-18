@@ -1,12 +1,14 @@
+import 'package:code_brew/code_brew.dart';
+import 'package:code_brew_example/models/UserModel.dart';
 import '../../models/UserModel.dart';
 import 'package:flutter/material.dart';
-import 'package:code_brew/code_brew.dart';
 
 /// A simple searchable list that uses code_brew UIList
 /// project: code_brew
 /// @package:
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
+// ignore: must_be_immutable
 class UserListScreen extends StatelessWidget {
 
   final String url = "http://5e29f02192edd600140de156.mockapi.io/v1/users";

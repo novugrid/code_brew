@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ///
 /// project: code_brew
 /// @package:
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-24
 class UrlModel {
 
@@ -43,10 +43,11 @@ class UrlModel {
   /// build the url into a string
   String toUrl({String searchTerm}) {
     String url = searchTerm != null ? "$searchUrl?$searchKey=$searchTerm" :
-        baseUrl;
+        "$baseUrl/?";
     if (limit != null && limit != 0) {
-      url += "?page=$page&limit=$limit";
+      url += "&page=$page&limit=$limit";
     }
+    print("url sent: $url");
     return url;
   }
 }

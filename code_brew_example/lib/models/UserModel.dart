@@ -1,11 +1,12 @@
 import 'package:code_brew/code_brew.dart';
+
 ///
 /// project: code_brew
 /// @package: 
-/// @author dammyololade <damola@kobo360.com>
+/// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
 
-class UserModel extends BaseModel{
+class UserModel extends PaginatedDataModel<User>{
   UserData userData;
   bool success;
 
@@ -19,16 +20,11 @@ class UserModel extends BaseModel{
     success: json["success"],
   );
 
-  Map<String, dynamic> toJson() => {
-    "data": data.toJson(),
-    "success": success,
-  };
-
   @override
   fromJson(Map<String, dynamic> response) {
-    success = true;
-    this.total = 100;
     this.data = UserData.fromJson(response["data"]).users;
+    super.fromJson(response);
+    total = data.length;
     return this;
   }
 }
