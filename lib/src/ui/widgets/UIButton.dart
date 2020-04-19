@@ -1,8 +1,7 @@
+import 'package:code_brew/src/ui/UICodeBrew.dart';
 import 'package:flutter/material.dart';
 
 enum UIButtonType { raised, flat, outline}
-
-enum UIAlignment { left, right, top, bottom }
 
 class UIButton extends MaterialButton {
   final UIButtonType type;
@@ -51,7 +50,7 @@ class UIButton extends MaterialButton {
           );
           break;
         case UIAlignment.bottom:
-          current = Row(
+          current = Column(
             children: <Widget>[current, icon],
           );
           break;
