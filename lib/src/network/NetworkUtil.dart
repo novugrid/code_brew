@@ -1,3 +1,4 @@
+import 'package:code_brew/src/network/ApiError.dart';
 import 'package:code_brew/src/network/CBRequestInterceptor.dart';
 import 'package:dio/dio.dart';
 
@@ -38,14 +39,19 @@ class NetworkUtil {
           await _getDioInstance().delete(url, queryParameters: queryParams);
           break;
       }
+      return response;
+      
     } on DioError catch (e, stackTace) {
       print("see error here");
       print(e);
       print(stackTace);
-      response = e.response;
+      
+      return Future.error(ApiError.fromDio(e));
+      
+      // response = e.response;
     }
 
-    return response;
+    
   }
 }
 
