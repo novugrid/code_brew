@@ -2,6 +2,9 @@ import 'package:code_brew_example/ui/DashboardScreen.dart';
 import 'package:code_brew_example/ui/list/UserListScreen.dart';
 import 'package:flutter/material.dart';
 
+import 'list/UserListScreen.dart';
+import 'UIWidgetsListScreen.dart';
+
 ///
 /// project: code_brew
 /// @package:
@@ -22,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     widgets = [
       DashboardScreen(),
+      UIWidgetsListScreen(),
       UserListScreen(),
       randomWidget("Notifications"),
       randomWidget("Profile"),
