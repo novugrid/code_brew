@@ -24,6 +24,10 @@ class _UIWidgetsListScreenState extends State<UIWidgetsListScreen> {
             title: Text("Images"),
             onTap: (){ UIRoutes.navigateToImagesScreen(context); },
           ),
+          ListTile(
+            title: Text("Buttons"),
+            onTap: (){ UIRoutes.navigateToButtonScreen(context); },
+          ),
 
         ],
       ),

@@ -5,3 +5,4 @@ export 'src/ui/widgets/UIPhoneNumberField.dart';
 export 'src/ui/widgets/UIProfileImage.dart';
 export 'src/ui/widgets/UIDropdown.dart';
 export 'src/ui/widgets/UIPinField.dart';
+export 'src/ui/widgets/UIButton.dart';
