@@ -10,4 +10,4 @@ export 'src/ui/widgets/UIButton.dart';
 export 'src/ui/widgets/UITextFormField.dart';
 
 // CB Views
-export 'src/ui/modules/CBViewEmailLogin.dart';
+export 'src/ui/modules/emaillogin/CBViewEmailLogin.dart';
