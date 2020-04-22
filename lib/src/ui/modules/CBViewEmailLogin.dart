@@ -1,8 +1,6 @@
 import 'package:code_brew/code_brew.dart';
 import 'package:flutter/material.dart';
 import 'package:the_validator/the_validator.dart';
-import 'package:crawlmobile/ui/AppColors.dart';
-import 'package:crawlmobile/ui/NavigatorManager.dart';
 
 // TODO(Lekan): CBViewEmailLogin or CBEmailLoginView
 class CBViewEmailLogin extends StatefulWidget {
@@ -11,7 +9,6 @@ class CBViewEmailLogin extends StatefulWidget {
 }
 
 class _CBViewEmailLogin extends State<CBViewEmailLogin> {
-
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -32,12 +29,11 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
 
           Container(
             alignment: Alignment.centerRight,
-            child: UIButton(onPressed: () {Routes.navigateToRecoverPasswordScreen(context);},
+            child: UIButton(onPressed: () {},
               type: UIButtonType.flat,
               text: "Recover Password",
               textColor: Colors.white,
               color: Colors.transparent,
-
             ),
           ),
           SizedBox(height: 10,),
@@ -47,9 +43,8 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
               child: UIButton(onPressed: () {},
                 type: UIButtonType.raised,
                 text: "Login",
-                color: AppColors.crawlBlue,)
-
-          )
+                color: Theme.of(context).accentColor,
+              ))
         ],
       ),
     );
