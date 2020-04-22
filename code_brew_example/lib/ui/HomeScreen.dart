@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //          ),
 //          elevation: 0,
 //          centerTitle: true,
-//          backgroundColor: Colors.white,
+//          backgroundColor: Colors.whiCte,
 //        ),
         bottomNavigationBar: Stack(
           children: <Widget>[

@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: CodeBrewTheme.purple(),
+      theme: CodeBrewTheme.green(),
 //      home: HomeScreen(),
       initialRoute: '/home',
       routes: {
