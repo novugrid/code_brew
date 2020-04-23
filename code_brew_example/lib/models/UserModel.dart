@@ -2,11 +2,11 @@ import 'package:code_brew/code_brew.dart';
 
 ///
 /// project: code_brew
-/// @package: 
+/// @package:
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-23
 
-class UserModel extends PaginatedDataModel<User>{
+class UserModel extends PaginatedDataModel<User> {
   UserData userData;
   bool success;
 
@@ -16,9 +16,9 @@ class UserModel extends PaginatedDataModel<User>{
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    userData: UserData.fromJson(json["data"]),
-    success: json["success"],
-  );
+        userData: UserData.fromJson(json["data"]),
+        success: json["success"],
+      );
 
   @override
   fromJson(Map<String, dynamic> response) {
@@ -37,12 +37,12 @@ class UserData {
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-    users: List<User>.from(json["users"].map((x) => User.fromJson(x))),
-  );
+        users: List<User>.from(json["users"].map((x) => User.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "users": List<dynamic>.from(users.map((x) => x.toJson())),
-  };
+        "users": List<dynamic>.from(users.map((x) => x.toJson())),
+      };
 }
 
 class User {
@@ -63,20 +63,20 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    createdAt: DateTime.parse(json["createdAt"]),
-    name: json["name"],
-    avatar: json["avatar"],
-    email: json["email"],
-    address: json["address"],
-  );
+        id: json["id"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        name: json["name"],
+        avatar: json["avatar"],
+        email: json["email"],
+        address: json["address"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "createdAt": createdAt.toIso8601String(),
-    "name": name,
-    "avatar": avatar,
-    "email": email,
-    "address": address,
-  };
+        "id": id,
+        "createdAt": createdAt.toIso8601String(),
+        "name": name,
+        "avatar": avatar,
+        "email": email,
+        "address": address,
+      };
 }
