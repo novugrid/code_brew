@@ -2,33 +2,31 @@ import 'package:code_brew/src/ui/UICodeBrew.dart';
 import 'package:code_brew/src/ui/theme/CodeBrewTheme.dart';
 import 'package:flutter/material.dart';
 
-
 class UITextFormField extends StatefulWidget {
   final String hint;
   final String label;
   final UIAlignment labelAlignment;
   final Border border;
   final EdgeInsetsGeometry padding;
-  final Color labelColor;
+  final TextStyle labelStyle;
   final Color hintColor;
+  final TextInputType keyboardType;
 
-
-  UITextFormField({this.hint = "",
-    this.label,
-    this.labelAlignment = UIAlignment.top,
-    this.border,
-    this.padding,
-    this.labelColor,
-    this.hintColor
-
-  });
+  UITextFormField(
+      {this.hint = "",
+      this.label,
+      this.labelAlignment = UIAlignment.top,
+      this.border,
+      this.padding,
+      this.labelStyle,
+      this.hintColor,
+      this.keyboardType = TextInputType.text});
 
   @override
   State<StatefulWidget> createState() => _UITextFormField();
 }
 
 class _UITextFormField extends State<UITextFormField> {
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -47,17 +45,24 @@ class _UITextFormField extends State<UITextFormField> {
             .none, // TODO(Lekan): Add improvements to this in version 1.2
         contentPadding: EdgeInsets.zero,
       ),
+      keyboardType: widget.keyboardType,
     );
+
     Widget container;
     if (widget.label != null) {
-      Color labelColor = widget.labelColor;
-      if (labelColor == null) {
-        labelColor = Colors.white;
+      TextStyle labelStyle = widget.labelStyle;
+      if (labelStyle == null) {
+        labelStyle = theme.inputDecorationTheme.labelStyle;
       }
+
       Widget label = Container(
-          margin: EdgeInsets.only(bottom: 5),
-          child: Text(
-            widget.label, style: TextStyle(color: labelColor),));
+        margin: EdgeInsets.only(bottom: 5),
+        child: Text(
+          widget.label,
+          style: labelStyle,
+        ),
+      );
+
       switch (widget.labelAlignment) {
         case UIAlignment.left:
           container = Row(
@@ -96,7 +101,7 @@ class _UITextFormField extends State<UITextFormField> {
           Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
       if (theme.inputDecorationTheme.border.isOutline) {
         OutlineInputBorder outlineInputBorder =
-        theme.inputDecorationTheme.border as OutlineInputBorder;
+            theme.inputDecorationTheme.border as OutlineInputBorder;
         borderRadius = outlineInputBorder.borderRadius;
       }
     } else {

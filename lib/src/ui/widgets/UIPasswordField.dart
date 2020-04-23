@@ -4,21 +4,21 @@ import 'package:the_validator/the_validator.dart';
 import 'package:code_brew/src/ui/theme/CodeBrewTheme.dart';
 
 class UIPasswordField extends StatefulWidget {
-//  final TextEditingController passwordController;
+  final TextEditingController passwordController;
   final textColor;
   final String label;
   final UIAlignment labelAlignment;
   final Border border;
   final EdgeInsetsGeometry padding;
-  final Color labelColor;
+  final TextStyle labelStyle;
   final Color hintColor;
   final String hint;
 
   UIPasswordField({
-//    this.passwordController,
+    this.passwordController,
     this.textColor,
     this.label,
-    this.labelColor,
+    this.labelStyle,
     this.labelAlignment = UIAlignment.top,
     this.border,
     this.padding,
@@ -36,16 +36,13 @@ class _UIPasswordField extends State<UIPasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    Widget container;
     Color textColor = widget.textColor;
-    Color labelColor = widget.labelColor;
+    // Color labelColor = widget.labelColor;
     Color hintColor = widget.hintColor;
 
     if (textColor == null) {
       textColor = Colors.white;
-    }
-
-    if (labelColor == null) {
-      labelColor = Colors.white;
     }
 
     if (hintColor == null) {
@@ -55,11 +52,11 @@ class _UIPasswordField extends State<UIPasswordField> {
 
     final ThemeData theme = Theme.of(context);
 
-    Widget current2 = TextFormField(
-      /*controller: passwordController,
-      autovalidate: passwordController != null
-          ? passwordController.text.isNotEmpty
-          : false,*/
+    Widget current = TextFormField(
+      controller: widget.passwordController,
+      autovalidate: widget.passwordController != null
+          ? widget.passwordController.text.isNotEmpty
+          : false,
       style: CodeBrewTheme.textFieldStyle,
       decoration: InputDecoration(
         hintText: widget.hint,
@@ -104,38 +101,16 @@ class _UIPasswordField extends State<UIPasswordField> {
       onChanged: (val) {},
     );
 
-    Widget current = TextField(
-      style: CodeBrewTheme.textFieldStyle,
-      decoration: InputDecoration(
-        hintText: widget.hint,
-        hintStyle: TextStyle(color: hintColor),
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.zero,
-        /*suffix: InkWell(
-          onTap: () {
-            togglePasswordVisibility();
-          },
-          child: Container(
-            width: 18,
-            height: 18,
-            padding: const EdgeInsets.only(right: 18.0),
-            child: Icon(
-                obscurePassword ? Icons.visibility_off : Icons.visibility,
-                color: Colors.white,
-                size: 18),
-          ),
-        ),*/
-      ),
-
-    );
-    Widget container;
-
     if (widget.label != null) {
+      TextStyle labelStyle = widget.labelStyle;
+      if (labelStyle == null) {
+        labelStyle = theme.inputDecorationTheme.labelStyle;
+      }
       Widget label = Container(
         margin: EdgeInsets.only(bottom: 5),
         child: Text(
           widget.label,
-          style: TextStyle(color: labelColor),
+          style: labelStyle,
         ),
       );
 

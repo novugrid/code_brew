@@ -42,15 +42,14 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
         children: <Widget>[
 
           UITextFormField(
+            label: "Email",
             hint: "Enter email address",
-            label: "Email Label",
           ),
-          SizedBox(
-            height: 10
-          ),
+          SizedBox(height: 15),
           UIPasswordField(
             label: "Password",
             hint: "Enter password",
+            passwordController: passwordController,
           ),
 
           UIButton(
@@ -62,9 +61,7 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
             fillContainer: true,
             padding: EdgeInsets.zero,
           ),
-
-
-          
+          SizedBox(height: 10,),
           // Todo: Replace with the right model
           StreamBuilder<bool>(
             stream: bloc.loginSuccessSubject.stream,
