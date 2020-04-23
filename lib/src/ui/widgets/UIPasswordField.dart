@@ -4,7 +4,7 @@ import 'package:the_validator/the_validator.dart';
 import 'package:code_brew/src/ui/theme/CodeBrewTheme.dart';
 
 class UIPasswordField extends StatefulWidget {
-  final TextEditingController passwordController;
+//  final TextEditingController passwordController;
   final textColor;
   final String label;
   final UIAlignment labelAlignment;
@@ -15,15 +15,15 @@ class UIPasswordField extends StatefulWidget {
   final String hint;
 
   UIPasswordField({
-    this.passwordController,
+//    this.passwordController,
     this.textColor,
     this.label,
     this.labelColor,
-    this.labelAlignment,
+    this.labelAlignment = UIAlignment.top,
     this.border,
     this.padding,
     this.hintColor,
-    this.hint
+    this.hint = "",
   });
 
   @override
@@ -31,6 +31,7 @@ class UIPasswordField extends StatefulWidget {
 }
 
 class _UIPasswordField extends State<UIPasswordField> {
+//  TextEditingController passwordController = TextEditingController();
   bool obscurePassword = true;
 
   @override
@@ -48,17 +49,17 @@ class _UIPasswordField extends State<UIPasswordField> {
     }
 
     if (hintColor == null) {
-      hintColor = Colors.white;
+      hintColor = Colors.white24;
     }
 
 
     final ThemeData theme = Theme.of(context);
 
-    Widget current = TextFormField(
-      controller: widget.passwordController,
-      autovalidate: widget.passwordController != null
-          ? widget.passwordController.text.isNotEmpty
-          : false,
+    Widget current2 = TextFormField(
+      /*controller: passwordController,
+      autovalidate: passwordController != null
+          ? passwordController.text.isNotEmpty
+          : false,*/
       style: CodeBrewTheme.textFieldStyle,
       decoration: InputDecoration(
         hintText: widget.hint,
@@ -77,7 +78,8 @@ class _UIPasswordField extends State<UIPasswordField> {
             height: 18,
             padding: const EdgeInsets.only(right: 18.0),
             child: Icon(
-                obscurePassword ? Icons.visibility_off : Icons.visibility, color: Colors.white,
+                obscurePassword ? Icons.visibility_off : Icons.visibility,
+                color: Colors.white,
                 size: 18),
           ),
         ),
@@ -102,6 +104,30 @@ class _UIPasswordField extends State<UIPasswordField> {
       onChanged: (val) {},
     );
 
+    Widget current = TextField(
+      style: CodeBrewTheme.textFieldStyle,
+      decoration: InputDecoration(
+        hintText: widget.hint,
+        hintStyle: TextStyle(color: hintColor),
+        border: InputBorder.none,
+        contentPadding: EdgeInsets.zero,
+        /*suffix: InkWell(
+          onTap: () {
+            togglePasswordVisibility();
+          },
+          child: Container(
+            width: 18,
+            height: 18,
+            padding: const EdgeInsets.only(right: 18.0),
+            child: Icon(
+                obscurePassword ? Icons.visibility_off : Icons.visibility,
+                color: Colors.white,
+                size: 18),
+          ),
+        ),*/
+      ),
+
+    );
     Widget container;
 
     if (widget.label != null) {
@@ -151,7 +177,7 @@ class _UIPasswordField extends State<UIPasswordField> {
           Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
       if (theme.inputDecorationTheme.border.isOutline) {
         OutlineInputBorder outlineInputBorder =
-            theme.inputDecorationTheme.border as OutlineInputBorder;
+        theme.inputDecorationTheme.border as OutlineInputBorder;
         borderRadius = outlineInputBorder.borderRadius;
       }
     } else {

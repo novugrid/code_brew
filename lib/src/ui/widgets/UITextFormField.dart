@@ -35,7 +35,7 @@ class _UITextFormField extends State<UITextFormField> {
 
     Color hintColor = widget.hintColor;
     if (hintColor == null) {
-      hintColor = Colors.white;
+      hintColor = Colors.white24;
     }
 
     Widget current = TextFormField(

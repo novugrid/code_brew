@@ -11,7 +11,7 @@ class CBEmailLoginBloc {
 
   NetworkUtil _networkUtil;
   
-  PublishSubject<bool> loginSuccessSubject = PublishSubject();
+  BehaviorSubject<bool> loginSuccessSubject = BehaviorSubject<bool>.seeded(false);
 
   CBEmailLoginBloc() {
     _networkUtil = NetworkUtil();
