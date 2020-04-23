@@ -9,8 +9,9 @@ class CBViewEmailLogin<T> extends StatefulWidget {
   
   final String url;
   final ValueChanged<T> onCompleted;
+  final VoidCallback onRecoverPressed;
 
-  CBViewEmailLogin({this.url, this.onCompleted});
+  CBViewEmailLogin({this.url, this.onCompleted, this.onRecoverPressed});
 
   @override
   State<StatefulWidget> createState() => _CBViewEmailLogin();
@@ -39,15 +40,7 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
     return Form(
       child: Column(
         children: <Widget>[
-          TextFormField(
-            validator: FieldValidator.email(),
-            decoration: InputDecoration(
-              labelText: "Email",
-            ),
-          ),
-          SizedBox(
-            height: 10
-          ),
+
           UITextFormField(
             hint: "Enter Email Address",
             label: "Email Label",
@@ -58,6 +51,16 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
           UIPasswordField(
             passwordController: passwordController,
           ),
+
+          UIButton(
+            onPressed: widget.onRecoverPressed,
+            type: UIButtonType.flat,
+            text: "Recover Password",
+            textColor: Colors.white,
+            color: Colors.transparent,
+          ),
+
+
           
           // Todo: Replace with the right model
           StreamBuilder<bool>(
