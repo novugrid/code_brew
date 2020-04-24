@@ -18,23 +18,25 @@ class UIButton extends MaterialButton {
   final double height;
   final EdgeInsets padding;
   final Alignment alignment;
+  final double elevation;
 
-  const UIButton(
-      {this.type,
-      @required this.onPressed,
-      this.child,
-      this.text,
-      this.alignment,
-      this.icon,
-      this.iconAlignment = UIAlignment.left,
-      this.iconSpacing = 0,
-      this.color,
-      this.textColor,
-      this.borderWidth = 1.0,
-      this.fillContainer = false,
-      this.height,
-      this.padding})
-      : super(onPressed: onPressed);
+  const UIButton({
+    this.type,
+    @required this.onPressed,
+    this.child,
+    this.text,
+    this.alignment,
+    this.icon,
+    this.iconAlignment = UIAlignment.left,
+    this.iconSpacing = 0,
+    this.color,
+    this.textColor,
+    this.borderWidth = 1.0,
+    this.fillContainer = false,
+    this.height,
+    this.padding,
+    this.elevation,
+  }) : super(onPressed: onPressed);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,10 @@ class UIButton extends MaterialButton {
 
     Widget current = child;
     if (child == null) {
-      current = Text(text ?? "");
+      current = Text(
+        text ?? "",
+        textAlign: TextAlign.left,
+      );
     }
 
     if (icon != null) {
@@ -112,6 +117,7 @@ class UIButton extends MaterialButton {
     switch (type) {
       case UIButtonType.raised:
         button = RaisedButton(
+          elevation: elevation ?? 6,
           onPressed: onPressed,
           child: current,
           color: color,
@@ -124,8 +130,8 @@ class UIButton extends MaterialButton {
           onPressed: onPressed,
           child: current,
           textColor: textColor,
-          // color: color, // Note: Flat Dont need colors
           padding: this.padding,
+          // color: color, // Note: Flat Dont need colors
         );
         break;
       case UIButtonType.outline:
@@ -143,11 +149,20 @@ class UIButton extends MaterialButton {
         break;
     }
 
+    /*button = ButtonTheme(
+      minWidth: double.infinity,
+      child: button,
+    );*/
+
     if (fillContainer || alignment != null) {
+      // print("Fill Container: $fillContainer");
       button = Container(
         width: fillContainer ? double.infinity : theme.buttonTheme.minWidth,
         height: height ?? theme.buttonTheme.height,
         alignment: this.alignment,
+        color: this.type == UIButtonType.raised && alignment != null
+            ? color
+            : Colors.transparent,
         child: button,
       );
     }
