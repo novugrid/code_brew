@@ -19,22 +19,22 @@ class UIButton extends MaterialButton {
   final EdgeInsets padding;
   final Alignment alignment;
 
-  const UIButton({
-    this.type,
-    @required this.onPressed,
-    this.child,
-    this.text,
-    this.alignment,
-    this.icon,
-    this.iconAlignment = UIAlignment.left,
-    this.iconSpacing = 0,
-    this.color,
-    this.textColor,
-    this.borderWidth = 1.0,
-    this.fillContainer = false,
-    this.height,
-    this.padding
-  }) : super(onPressed: onPressed);
+  const UIButton(
+      {this.type,
+      @required this.onPressed,
+      this.child,
+      this.text,
+      this.alignment,
+      this.icon,
+      this.iconAlignment = UIAlignment.left,
+      this.iconSpacing = 0,
+      this.color,
+      this.textColor,
+      this.borderWidth = 1.0,
+      this.fillContainer = false,
+      this.height,
+      this.padding})
+      : super(onPressed: onPressed);
 
   @override
   Widget build(BuildContext context) {
@@ -52,35 +52,57 @@ class UIButton extends MaterialButton {
       textColor = theme.textTheme.button.color;
     }
 
-
     Widget current = child;
     if (child == null) {
       current = Text(text ?? "");
     }
-
 
     if (icon != null) {
       switch (iconAlignment) {
         case UIAlignment.left:
           current = Row(
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[icon, SizedBox(width: this.iconSpacing,), current],
+            children: <Widget>[
+              icon,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              current
+            ],
           );
           break;
         case UIAlignment.right:
           current = Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[current, SizedBox(width: this.iconSpacing,), icon],
+            children: <Widget>[
+              current,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              icon
+            ],
           );
           break;
         case UIAlignment.top:
           current = Column(
-            children: <Widget>[icon, SizedBox(width: this.iconSpacing,), current],
+            children: <Widget>[
+              icon,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              current
+            ],
           );
           break;
         case UIAlignment.bottom:
           current = Column(
-            children: <Widget>[current, SizedBox(width: this.iconSpacing,), icon],
+            children: <Widget>[
+              current,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              icon
+            ],
           );
           break;
       }
@@ -107,13 +129,16 @@ class UIButton extends MaterialButton {
         );
         break;
       case UIButtonType.outline:
-        button = OutlineButton(onPressed: onPressed,
+        button = OutlineButton(
+          onPressed: onPressed,
           child: current,
           color: color,
-          borderSide: BorderSide(color: color),
+          borderSide: BorderSide(color: color, width: 2.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
           textColor: textColor,
           padding: this.padding,
-
         );
         break;
     }
