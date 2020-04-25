@@ -60,7 +60,7 @@ class _UIPasswordField extends State<UIPasswordField> {
       style: CodeBrewTheme.textFieldStyle,
       decoration: InputDecoration(
         hintText: widget.hint,
-        hintStyle: TextStyle(color: hintColor),
+        // hintStyle: TextStyle(color: hintColor),
         border: InputBorder.none,
         contentPadding: EdgeInsets.zero,
         // errorText: passwordFieldError,

@@ -40,7 +40,7 @@ class _UITextFormField extends State<UITextFormField> {
       style: CodeBrewTheme.textFieldStyle,
       decoration: InputDecoration(
         hintText: widget.hint,
-        hintStyle: TextStyle(color: hintColor),
+        // hintStyle: TextStyle(color: hintColor),
         border: InputBorder
             .none, // TODO(Lekan): Add improvements to this in version 1.2
         contentPadding: EdgeInsets.zero,
