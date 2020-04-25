@@ -42,13 +42,13 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
         children: <Widget>[
 
           UITextFormField(
-            hint: "Enter Email Address",
-            label: "Email Label",
+            label: "Email",
+            hint: "Enter email address",
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 15),
           UIPasswordField(
+            label: "Password",
+            hint: "Enter password",
             passwordController: passwordController,
           ),
 
@@ -57,11 +57,11 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
             type: UIButtonType.flat,
             text: "Recover Password",
             textColor: Colors.white,
-            color: Colors.transparent,
+            alignment: Alignment.centerRight,
+            fillContainer: true,
+            padding: EdgeInsets.zero,
           ),
-
-
-          
+          SizedBox(height: 10,),
           // Todo: Replace with the right model
           StreamBuilder<bool>(
             stream: bloc.loginSuccessSubject.stream,
@@ -79,9 +79,7 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
                     onPressed: () {},
                     type: UIButtonType.raised,
                     text: "Login",
-                    icon: Icon(Icons.arrow_upward),
-                    iconAlignment: UIAlignment.top,
-
+                    fillContainer: true,
                   ),
 
                 ],

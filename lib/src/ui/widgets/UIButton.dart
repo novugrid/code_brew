@@ -10,24 +10,32 @@ class UIButton extends MaterialButton {
   final String text;
   final Widget icon;
   final UIAlignment iconAlignment;
-  // final Image image;
-  // final UIAlignment imageAlignment;
+  final double iconSpacing;
   final Color color;
   final Color textColor;
   final double borderWidth;
-
+  final bool fillContainer;
+  final double height;
+  final EdgeInsets padding;
+  final Alignment alignment;
+  final double elevation;
 
   const UIButton({
     this.type,
     @required this.onPressed,
     this.child,
     this.text,
+    this.alignment,
     this.icon,
     this.iconAlignment = UIAlignment.left,
+    this.iconSpacing = 0,
     this.color,
     this.textColor,
-    this.borderWidth = 1.0
-
+    this.borderWidth = 1.0,
+    this.fillContainer = false,
+    this.height,
+    this.padding,
+    this.elevation,
   }) : super(onPressed: onPressed);
 
   @override
@@ -36,6 +44,7 @@ class UIButton extends MaterialButton {
 
     Color color = this.color;
     Color textColor = this.textColor;
+    // height = theme.buttonTheme.height;
 
     if (color == null) {
       color = theme.buttonColor;
@@ -45,36 +54,60 @@ class UIButton extends MaterialButton {
       textColor = theme.textTheme.button.color;
     }
 
-
     Widget current = child;
     if (child == null) {
-      current = Text(text ?? "");
+      current = Text(
+        text ?? "",
+        textAlign: TextAlign.left,
+      );
     }
-
 
     if (icon != null) {
       switch (iconAlignment) {
         case UIAlignment.left:
           current = Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[icon, current],
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              icon,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              current
+            ],
           );
           break;
         case UIAlignment.right:
           current = Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-            children: <Widget>[current, icon],
+            children: <Widget>[
+              current,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              icon
+            ],
           );
           break;
         case UIAlignment.top:
           current = Column(
-            children: <Widget>[icon, current],
+            children: <Widget>[
+              icon,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              current
+            ],
           );
           break;
         case UIAlignment.bottom:
           current = Column(
-            children: <Widget>[current, icon],
+            children: <Widget>[
+              current,
+              SizedBox(
+                width: this.iconSpacing,
+              ),
+              icon
+            ],
           );
           break;
       }
@@ -84,10 +117,12 @@ class UIButton extends MaterialButton {
     switch (type) {
       case UIButtonType.raised:
         button = RaisedButton(
+          elevation: elevation ?? 6,
           onPressed: onPressed,
           child: current,
           color: color,
           textColor: textColor,
+          padding: this.padding,
         );
         break;
       case UIButtonType.flat:
@@ -95,20 +130,42 @@ class UIButton extends MaterialButton {
           onPressed: onPressed,
           child: current,
           textColor: textColor,
-          color: color,
-          
+          padding: this.padding,
+          // color: color, // Note: Flat Dont need colors
         );
         break;
       case UIButtonType.outline:
-        button = OutlineButton(onPressed: onPressed,
+        button = OutlineButton(
+          onPressed: onPressed,
           child: current,
           color: color,
-          borderSide: BorderSide(color: color),
-          textColor: textColor,);
+          borderSide: BorderSide(color: color, width: 2.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          textColor: textColor,
+          padding: this.padding,
+        );
         break;
     }
-    
 
+    /*button = ButtonTheme(
+      minWidth: double.infinity,
+      child: button,
+    );*/
+
+    if (fillContainer || alignment != null) {
+      // print("Fill Container: $fillContainer");
+      button = Container(
+        width: fillContainer ? double.infinity : theme.buttonTheme.minWidth,
+        height: height ?? theme.buttonTheme.height,
+        alignment: this.alignment,
+        color: this.type == UIButtonType.raised && alignment != null
+            ? color
+            : Colors.transparent,
+        child: button,
+      );
+    }
 
     return button;
   }

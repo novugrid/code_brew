@@ -21,7 +21,7 @@ class UserListScreen extends StatelessWidget {
       ),
       body: UIListView<UserModel>(
         model: UserModel(),
-        itemBuilder: (BuildContext contxt, data) {
+        itemBuilder: (BuildContext contxt, data, index, isSelected) {
           return _buildItem(data);
         },
         urlModel: getUrl(),
