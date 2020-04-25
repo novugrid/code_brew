@@ -1,7 +1,5 @@
 import 'package:code_brew/code_brew.dart';
 
-import 'CBBaseModel.dart';
-
 ///
 /// project: code_brew
 /// @package: 
@@ -21,6 +19,10 @@ enum BlocState {
   dataLoaded,
   error,
   loadingMoreData,
+  moreDataLoaded,
+  dataRefreshed,
+  searchDataReturned,
+  searchingData,
 }
 
 enum BlocEvent {

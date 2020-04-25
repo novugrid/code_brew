@@ -1,7 +1,6 @@
 import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/bloc/BaseBloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
-import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/indicator/classic_indicator.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/indicator/material_indicator.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/smart_refresher.dart';
@@ -20,12 +19,16 @@ class UIListView<T> extends StatefulWidget {
   PaginatedDataModel model;
   UrlModel urlModel;
   bool searchable;
+  EdgeInsets padding;
+  RefreshController refreshController;
 
   UIListView(
       {@required this.itemBuilder,
       @required this.model,
       @required this.urlModel,
         this.searchable = true,
+        this.padding = EdgeInsets.zero,
+        this.refreshController
       });
 
   @override
@@ -39,14 +42,16 @@ class _UIListViewState<T> extends State<UIListView> {
 
   var searchController = TextEditingController();
   String currentSearch = "";
-  ValueNotifier<bool> showSearchLoading = ValueNotifier(false);
+  bool showSearchLoading = false;
   ValueNotifier<bool> moreLoadingNotifier = ValueNotifier(false);
   List items = [];
-  RefreshController _controller = RefreshController();
+  RefreshController _controller;
   PaginatedDataModel model;
+  bool showLoading;
 
   @override
   void initState() {
+    _controller = widget.refreshController ?? RefreshController();
     baseBloc = BaseBloc(widget.model, widget.urlModel);
     baseBloc.add(BlocEvent.fetch);
     searchController.addListener(onSearch);
@@ -56,7 +61,7 @@ class _UIListViewState<T> extends State<UIListView> {
   void onSearch() {
     if (currentSearch != searchController.text) {
       currentSearch = searchController.text;
-      showSearchLoading.value = true;
+      showLoading = true;
       baseBloc.search(searchController.text);
       items = [];
     }
@@ -64,32 +69,30 @@ class _UIListViewState<T> extends State<UIListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        widget.searchable ? UISearchBar(
-          controller: searchController,
-          showLoadingNotifier: showSearchLoading,
-        ) : SizedBox(),
-        Expanded(
-          child: StreamBuilder<BlocModel>(
-              stream: baseBloc.outBlocModel,
-              // ignore: missing_return
-              builder: (context, AsyncSnapshot<BlocModel> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  case ConnectionState.active:
-                  case ConnectionState.done:
-                    _handleBlocEvent(snapshot.data.event);
-                    model = snapshot.data.data;
-                    setItems(model);
-                    if (items.isEmpty) {
-                      return Center(child: Text("No user found"),);
-                    } else {
-                      return SmartRefresher(
+    return StreamBuilder<BlocModel>(
+        stream: baseBloc.outBlocModel,
+        // ignore: missing_return
+        builder: (context, AsyncSnapshot<BlocModel> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            case ConnectionState.active:
+            case ConnectionState.done:
+              _handleBlocState(snapshot.data);
+              model = snapshot.data.data;
+              return Column(
+                children: <Widget>[
+                  if(widget.searchable) UISearchBar(
+                    controller: searchController,
+                    showLoadingNotifier: ValueNotifier(showSearchLoading),
+                  ),
+                  if(items.isEmpty) Center(child: Text("No item found"),)
+                  else
+                    Expanded(
+                      child: SmartRefresher(
                         controller: _controller,
                         enablePullDown: true,
                         enablePullUp: items.length < model.total,
@@ -101,7 +104,7 @@ class _UIListViewState<T> extends State<UIListView> {
                           baseBloc.add(BlocEvent.loadMore);
                         },
                         child: ListView.builder(
-                            padding: EdgeInsets.zero,
+                            padding: widget.padding,
                             itemCount: items.length,
                             itemBuilder: (context, index) {
                               return widget.itemBuilder(
@@ -109,67 +112,43 @@ class _UIListViewState<T> extends State<UIListView> {
                             }),
                         header: WaterDropMaterialHeader(),
                         footer: ClassicFooter(),
-                      );
-                    }
-                }
-              }),
-        ),
-
-        ValueListenableBuilder(valueListenable: moreLoadingNotifier,
-            builder: (context, bool value, child) {
-              if (value) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    CircularProgressIndicator(),
-                    SizedBox(width: 10,),
-                    Text("Load more")
-                  ],
-              ),
-                );
-              } else {
-                return SizedBox();
-              }
-            }
-        )
-      ],
-    );
+                      ),
+                    )
+                ],
+              );
+          }
+        });
   }
 
-  void setItems(PaginatedDataModel model) {
-    try {
-      items.addAll(model.data);
-    } catch (err) {
-
-    }
-  }
-
-  void _handleBlocEvent(BlocEvent event) {
-    switch (event) {
-      case BlocEvent.fetch:
+  void _handleBlocState(BlocModel model) {
+    switch (model.state) {
+      case BlocState.loading:
         break;
-      case BlocEvent.refresh:
-        _controller.refreshCompleted();
+      case BlocState.dataLoaded:
+        items = model.data.data;
         break;
-      case BlocEvent.loadMore:
+      case BlocState.error:
+        break;
+      case BlocState.loadingMoreData:
+
+        break;
+      case BlocState.moreDataLoaded:
+        items.addAll(model.data.data);
         _controller.loadComplete();
         break;
-      case BlocEvent.search:
-        showSearchLoading.value = false;
+      case BlocState.dataRefreshed:
+        items = model.data.data;
+        _controller.refreshCompleted();
         break;
-      default:
+      case BlocState.searchDataReturned:
+        showSearchLoading = false;
+        items = model.data.data;
+        break;
+      case BlocState.searchingData:
+        showSearchLoading = true;
+        items = model.data.data;
         break;
     }
-  }
-
-  int getItemCount(CBBaseModel model) {
-    if (model.data is List) {
-      return model.data.total;
-    }
-//    if (data is Map)
-    return 0;
   }
 
   @override
