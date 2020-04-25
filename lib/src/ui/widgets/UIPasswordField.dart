@@ -10,7 +10,7 @@ class UIPasswordField extends StatefulWidget {
   final UIAlignment labelAlignment;
   final Border border;
   final EdgeInsetsGeometry padding;
-  final Color labelColor;
+  final TextStyle labelStyle;
   final Color hintColor;
   final String hint;
 
@@ -18,12 +18,12 @@ class UIPasswordField extends StatefulWidget {
     this.passwordController,
     this.textColor,
     this.label,
-    this.labelColor,
-    this.labelAlignment,
+    this.labelStyle,
+    this.labelAlignment = UIAlignment.top,
     this.border,
     this.padding,
     this.hintColor,
-    this.hint
+    this.hint = "",
   });
 
   @override
@@ -31,24 +31,22 @@ class UIPasswordField extends StatefulWidget {
 }
 
 class _UIPasswordField extends State<UIPasswordField> {
+//  TextEditingController passwordController = TextEditingController();
   bool obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
+    Widget container;
     Color textColor = widget.textColor;
-    Color labelColor = widget.labelColor;
+    // Color labelColor = widget.labelColor;
     Color hintColor = widget.hintColor;
 
     if (textColor == null) {
       textColor = Colors.white;
     }
 
-    if (labelColor == null) {
-      labelColor = Colors.white;
-    }
-
     if (hintColor == null) {
-      hintColor = Colors.white;
+      hintColor = Colors.white24;
     }
 
 
@@ -62,7 +60,7 @@ class _UIPasswordField extends State<UIPasswordField> {
       style: CodeBrewTheme.textFieldStyle,
       decoration: InputDecoration(
         hintText: widget.hint,
-        hintStyle: TextStyle(color: hintColor),
+        // hintStyle: TextStyle(color: hintColor),
         border: InputBorder.none,
         contentPadding: EdgeInsets.zero,
         // errorText: passwordFieldError,
@@ -77,7 +75,8 @@ class _UIPasswordField extends State<UIPasswordField> {
             height: 18,
             padding: const EdgeInsets.only(right: 18.0),
             child: Icon(
-                obscurePassword ? Icons.visibility_off : Icons.visibility, color: Colors.white,
+                obscurePassword ? Icons.visibility_off : Icons.visibility,
+                color: Colors.white,
                 size: 18),
           ),
         ),
@@ -102,14 +101,16 @@ class _UIPasswordField extends State<UIPasswordField> {
       onChanged: (val) {},
     );
 
-    Widget container;
-
     if (widget.label != null) {
+      TextStyle labelStyle = widget.labelStyle;
+      if (labelStyle == null) {
+        labelStyle = theme.inputDecorationTheme.labelStyle;
+      }
       Widget label = Container(
         margin: EdgeInsets.only(bottom: 5),
         child: Text(
           widget.label,
-          style: TextStyle(color: labelColor),
+          style: labelStyle,
         ),
       );
 
@@ -151,7 +152,7 @@ class _UIPasswordField extends State<UIPasswordField> {
           Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
       if (theme.inputDecorationTheme.border.isOutline) {
         OutlineInputBorder outlineInputBorder =
-            theme.inputDecorationTheme.border as OutlineInputBorder;
+        theme.inputDecorationTheme.border as OutlineInputBorder;
         borderRadius = outlineInputBorder.borderRadius;
       }
     } else {
