@@ -1,11 +1,8 @@
 import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
-import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:code_brew/src/models/UrlModel.dart';
 import 'package:code_brew/src/repository/Repository.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../models/CBBaseModel.dart';
 
 ///
 /// project: code_brew
@@ -30,18 +27,17 @@ class BaseBloc {
     currentEvent = event;
     switch (event) {
       case BlocEvent.fetch:
+        currentState = BlocState.moreDataLoaded;
         fetchData();
         break;
       case BlocEvent.refresh:
-        //inBlocModel.add(BlocModel(state: BlocState.loading));
         urlModel.page = 1;
+        currentState = BlocState.dataRefreshed;
         fetchData();
         break;
       case BlocEvent.loadMore:
         urlModel.page++;
-        currentState = BlocState.loadingMoreData;
-        inBlocModel.add(
-            BlocModel(data: model, state: currentState, event: currentEvent));
+        currentState = BlocState.moreDataLoaded;
         fetchData();
         break;
       case BlocEvent.search:
@@ -58,18 +54,20 @@ class BaseBloc {
   }
 
   void search(String searchTerm) async {
-    currentEvent = BlocEvent.search;
-    urlModel.page = 1;
-    PaginatedDataModel data = await repository.fetchData<PaginatedDataModel>(
-        model, urlModel.toUrl(searchTerm: searchTerm));
+    currentState = BlocState.searchingData;
     inBlocModel
-        .add(BlocModel(data: data, state: currentState, event: currentEvent));
+        .add(BlocModel(data: model, state: currentState, event: currentEvent));
+    urlModel.page = 1;
+    model = await repository.fetchData<PaginatedDataModel>(
+        model, urlModel.toUrl(searchTerm: searchTerm));
+    currentState = BlocState.searchDataReturned;
+    inBlocModel
+        .add(BlocModel(data: model, state: currentState, event: currentEvent));
   }
 
   void fetchData() async {
     model =
         await repository.fetchData<PaginatedDataModel>(model, urlModel.toUrl());
-    currentState = BlocState.dataLoaded;
     inBlocModel
         .add(BlocModel(data: model, state: currentState, event: currentEvent));
   }
