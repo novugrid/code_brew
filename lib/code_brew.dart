@@ -11,7 +11,7 @@ export 'src/models/CBBaseModel.dart';
 export 'src/models/PaginatedDataModel.dart';
 export 'src/models/UrlModel.dart';
 export 'src/network/NetworkUtil.dart';
-export 'src/ui/UIListView.dart';
+export 'src/ui/widgets/UIListView.dart';
 export 'src/ui/UiKits.dart';
 export 'src/ui/app_bars/FlatAppbar.dart';
 export 'src/ui/search_widgets/UISearch.dart';
