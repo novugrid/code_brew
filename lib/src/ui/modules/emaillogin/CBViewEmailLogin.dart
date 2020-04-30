@@ -58,7 +58,7 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
             text: "Recover Password",
             textColor: Colors.white,
             alignment: Alignment.centerRight,
-            fillContainer: true,
+//            fillContainer: true,
             padding: EdgeInsets.zero,
           ),
           SizedBox(height: 10,),
@@ -76,7 +76,10 @@ class _CBViewEmailLogin extends State<CBViewEmailLogin> {
                   if (snapshot.hasError) Text((snapshot.error as ApiError).error.userMessage),
                   if (snapshot.data == null) CircularProgressIndicator(strokeWidth: 2.0,)  else
                   UIButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Todo: Remove an replace with API call
+                      widget.onCompleted(true);
+                    },
                     type: UIButtonType.raised,
                     text: "Login",
                     fillContainer: true,

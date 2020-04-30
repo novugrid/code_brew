@@ -28,6 +28,10 @@ class _UIWidgetsListScreenState extends State<UIWidgetsListScreen> {
             title: Text("Buttons"),
             onTap: (){ UIRoutes.navigateToButtonScreen(context); },
           ),
+          ListTile(
+            title: Text("Grids"),
+            onTap: (){ UIRoutes.navigateToGridScreen(context); },
+          ),
 
         ],
       ),
