@@ -16,6 +16,7 @@ class UIButton extends MaterialButton {
   final double borderWidth;
   final bool fillContainer;
   final double height;
+  final double width;
   final EdgeInsets padding;
   final Alignment alignment;
   final double elevation;
@@ -36,6 +37,7 @@ class UIButton extends MaterialButton {
     this.borderWidth = 1.0,
     this.fillContainer = false,
     this.height,
+    this.width,
     this.padding,
     this.elevation,
     this.shape,
@@ -159,7 +161,8 @@ class UIButton extends MaterialButton {
       child: button,
     );*/
 
-    var width = theme.buttonTheme.minWidth;
+    var width = this.width ?? theme.buttonTheme.minWidth;
+
     if (fillContainer || alignment != null) {
       color = this.type == UIButtonType.raised && alignment != null
           ? color
@@ -171,6 +174,7 @@ class UIButton extends MaterialButton {
     button = ConstrainedBox(
       constraints: BoxConstraints(
         minWidth: width,
+        maxWidth: this.width ?? double.infinity,
         minHeight: height ?? theme.buttonTheme.height,
         maxHeight: height ?? double.infinity,
       ),
