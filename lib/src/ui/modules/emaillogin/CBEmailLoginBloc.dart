@@ -7,34 +7,37 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CBEmailLoginBloc {
-  EmailLoginParams uiModel = EmailLoginParams();
+
+  String emailLoginUrl = "";
+  EmailLoginParams emailLoginParams = EmailLoginParams();
 
   NetworkUtil _networkUtil;
-  
-  BehaviorSubject<bool> loginSuccessSubject = BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<ApiCallStates> loginSubject = BehaviorSubject.seeded(ApiCallStates.IDLE);
+
+  // Data
+  dynamic loginResponse;
 
   CBEmailLoginBloc() {
     _networkUtil = NetworkUtil();
   }
   
   dispose() {
-    loginSuccessSubject.close();
+    loginSubject.close();
   }
 
-  login() async {
-    loginSuccessSubject.add(null); // Hack hack haq haqqqq!!!!1
+  emailLogin() async {
+    loginSubject.add(ApiCallStates.LOADING); // Hack hack haq haqqqq!!!!1
     try {
       Response response = await _networkUtil.connectApi(
-        "",
+        emailLoginUrl,
         RequestMethod.post,
-        data: uiModel.toRequestParams(),
+        data: emailLoginParams.toRequestParams(),
       );
-      // ui
-      // Todo(Login): yeild the model we passed in to save the user info, 
-      loginSuccessSubject.add(true);
+      loginResponse = response.data;
+      loginSubject.add(ApiCallStates.SUCCESS);
     } on ApiError catch (apiError) {
-      // ui buzz
-      loginSuccessSubject.addError(apiError);
+      loginSubject.addError(apiError);
+      loginSubject.add(ApiCallStates.ERROR);
     }
     
   }

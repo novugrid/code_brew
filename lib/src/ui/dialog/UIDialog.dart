@@ -22,15 +22,22 @@ class UIDialog {
   OnPositiveBtnClicked onPositiveBtnClicked;
   OnNegativeBtnClicked onNegativeBtnClicked;
   String title;
+  String message;
+  String positiveText;
+  bool showIcon;
 
-  UIDialog(
-      {@required this.context,
-      this.type,
-      this.size = DialogSize.normal,
-      this.position = DialogPosition.center,
-      this.dismissable = true,
-      this.onPositiveBtnClicked,
-      this.onNegativeBtnClicked});
+  UIDialog({
+    @required this.context,
+    this.type,
+    this.size = DialogSize.normal,
+    this.position = DialogPosition.center,
+    this.dismissable = true,
+    this.onPositiveBtnClicked,
+    this.onNegativeBtnClicked,
+    this.title,
+    this.message,
+    this.showIcon = true,
+  });
 
   void show() {
     typeChangedNotifier = ValueNotifier(this.type);
@@ -123,14 +130,14 @@ class UIDialog {
         );
       case DialogType.error:
         return GeneralDialogWidget(
-          title: "Opps Errro!",
-          message: "Unable to delete item, oops error",
-          btnText: "Ok",
-          icon: Icon(
+          title: title ?? "Opps Error!",
+          message: message ?? "Unable to delete item, oops error",
+          btnText: positiveText ?? "Ok",
+          icon: showIcon ? Icon(
             Icons.error_outline,
             size: 30,
             color: Colors.red.shade400,
-          ),
+          ) : null,
         );
       case DialogType.general:
         return GeneralDialogWidget(
