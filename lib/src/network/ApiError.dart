@@ -75,7 +75,7 @@ class ApiError {
             this.errorDescription = this.error.userMessage;
           } else {
             this.errorDescription =
-                "Oops! we could'nt make connections with polaris mobile, please try again";
+                "Oops! we could'nt make connections, please try again";
           }
           break;
         case DioErrorType.SEND_TIMEOUT:

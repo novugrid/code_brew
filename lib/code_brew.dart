@@ -18,6 +18,7 @@ export 'src/ui/search_widgets/UISearch.dart';
 export 'src/ui/search_widgets/UISearchBar.dart';
 export 'src/ui/CBDataTable.dart';
 export 'src/ui/theme/CodeBrewTheme.dart';
+export 'src/network/CodeBrewNetworker.dart';
 export 'widgets.dart';
 
 /// A Calculator.
