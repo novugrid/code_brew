@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
 class CodeBrewNetworkConfig {
-  static String baseUrl;
+  static String baseUrl = "";
 }

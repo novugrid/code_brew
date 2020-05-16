@@ -36,12 +36,12 @@ class ApiError {
 
   int errorType = 0;
   String errorDescription;
-  ApiErrorModel error;
+  ApiErrorModel apiErrorModel;
 
   ApiError({this.errorDescription});
 
   ApiError.fromDio(Object dioError) {
-    error = ApiErrorModel();
+    apiErrorModel = ApiErrorModel();
     _handleError(dioError);
   }
 
@@ -71,8 +71,8 @@ class ApiError {
             this.errorDescription =
                 "Your session has timed out, please login again to proceed";
           } else if (dioError.response.statusCode == 400) {
-            this.error = ApiErrorModel.fromJson(dioError.response.data);
-            this.errorDescription = this.error.userMessage;
+            this.apiErrorModel = ApiErrorModel.fromJson(dioError.response.data);
+            this.errorDescription = this.apiErrorModel.error.userMessage;
           } else {
             this.errorDescription =
                 "Oops! we could'nt make connections, please try again";

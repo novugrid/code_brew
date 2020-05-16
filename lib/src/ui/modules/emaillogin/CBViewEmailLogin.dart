@@ -7,7 +7,6 @@ import 'package:the_validator/the_validator.dart';
 
 // TODO(Lekan): CBViewEmailLogin or CBEmailLoginView
 class CBEmailLoginView extends StatefulWidget {
-  
   final String url;
   final ValueChanged<dynamic> onCompleted;
   final VoidCallback onRecoverPressed;
@@ -19,14 +18,13 @@ class CBEmailLoginView extends StatefulWidget {
 }
 
 class _CBEmailLoginView extends State<CBEmailLoginView> {
-
   GlobalKey<FormState> _formKey = GlobalKey();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   CBEmailLoginBloc bloc;
-  
+
   @override
   void initState() {
     super.initState();
@@ -37,38 +35,39 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
         if (value == ApiCallStates.SUCCESS) {
           widget.onCompleted(bloc.loginResponse);
         }
-
       }, onError: (e) {
         if (e is ApiError) {
-          UIDialog(context: context, type: DialogType.error).show();
+          UIDialog(
+            context: context,
+            type: DialogType.error,
+            title: "Login Failed!",
+            message: e.errorDescription,
+            showIcon: false,
+          ).show();
           // e.error.userMessage;
         }
-
       });
     });
-
   }
 
   submit() {
-    UIDialog(context: context, type: DialogType.error).show();
 
-    /*if (_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate()) {
 
       bloc.emailLoginParams.email = emailController.text;
       bloc.emailLoginParams.password = passwordController.text;
       bloc.emailLogin();
 
-    }*/
+    }
+
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
-
           UITextFormField(
             controller: emailController,
             label: "Email",
@@ -92,31 +91,30 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
 //            fillContainer: true,
             padding: EdgeInsets.zero,
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           // Todo: Replace with the right model
           StreamBuilder<ApiCallStates>(
-            stream: bloc.loginSubject,
-            builder: (context, snapshot) {
-
-              if (snapshot.data == ApiCallStates.SUCCESS) {
-                widget.onCompleted(true);
-              }
-              
-              return Column(
-                children: <Widget>[
-                  // if (snapshot.hasError) Text((snapshot.error as ApiError).error.userMessage),
-                  if (snapshot.data == ApiCallStates.LOADING) CircularProgressIndicator(strokeWidth: 2.0,)  else
-                  UIButton(
-                    onPressed: submit,
-                    type: UIButtonType.raised,
-                    text: "Login",
-                    fillContainer: true,
-                  ),
-
-                ],
-              );
-            }
-          )
+              stream: bloc.loginSubject,
+              builder: (context, snapshot) {
+                return Column(
+                  children: <Widget>[
+                    // if (snapshot.hasError) Text((snapshot.error as ApiError).error.userMessage),
+                    if (snapshot.data == ApiCallStates.LOADING)
+                      CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                      )
+                    else
+                      UIButton(
+                        onPressed: submit,
+                        type: UIButtonType.raised,
+                        text: "Login",
+                        fillContainer: true,
+                      ),
+                  ],
+                );
+              })
         ],
       ),
     );
