@@ -13,6 +13,7 @@ class UIPasswordField extends StatefulWidget {
   final TextStyle labelStyle;
   final Color hintColor;
   final String hint;
+  final FormFieldValidator<String> validator;
 
   UIPasswordField({
     this.passwordController,
@@ -24,6 +25,7 @@ class UIPasswordField extends StatefulWidget {
     this.padding,
     this.hintColor,
     this.hint = "",
+    this.validator,
   });
 
   @override
@@ -83,7 +85,7 @@ class _UIPasswordField extends State<UIPasswordField> {
       ),
       obscureText: obscurePassword,
       //textAlign: TextAlign.left,
-      validator: FieldValidator.password(
+      validator: widget.validator ?? FieldValidator.password(
           minLength: 8,
           shouldContainNumber: true,
           shouldContainCapitalLetter: true,

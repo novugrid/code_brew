@@ -11,9 +11,9 @@ import 'package:dio/dio.dart';
 class CBRequestInterceptor extends Interceptor {
 
   Future<FutureOr> onRequest(RequestOptions options) async {
-    if (CBSessionManager.authToken.isNotEmpty) {
+    if (CBSessionManager().authToken.isNotEmpty) {
       options.headers.addAll({
-        "Authorization": "Bearer " + CBSessionManager.authToken,
+        "Authorization": "Bearer " + CBSessionManager().authToken,
       });
     }
     return options;

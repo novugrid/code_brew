@@ -11,16 +11,23 @@ class UITextFormField extends StatefulWidget {
   final TextStyle labelStyle;
   final Color hintColor;
   final TextInputType keyboardType;
+  final FormFieldValidator<String> validator;
+  final ValueChanged<String> onChanged;
+  final TextEditingController controller;
 
-  UITextFormField(
-      {this.hint = "",
-      this.label,
-      this.labelAlignment = UIAlignment.top,
-      this.border,
-      this.padding,
-      this.labelStyle,
-      this.hintColor,
-      this.keyboardType = TextInputType.text});
+  UITextFormField({
+    this.controller,
+    this.hint = "",
+    this.label,
+    this.labelAlignment = UIAlignment.top,
+    this.border,
+    this.padding,
+    this.labelStyle,
+    this.hintColor,
+    this.keyboardType = TextInputType.text,
+    this.validator,
+    this.onChanged,
+  });
 
   @override
   State<StatefulWidget> createState() => _UITextFormField();
@@ -37,6 +44,7 @@ class _UITextFormField extends State<UITextFormField> {
     }
 
     Widget current = TextFormField(
+      controller: widget.controller,
       style: CodeBrewTheme.textFieldStyle,
       decoration: InputDecoration(
         hintText: widget.hint,
@@ -44,8 +52,13 @@ class _UITextFormField extends State<UITextFormField> {
         border: InputBorder
             .none, // TODO(Lekan): Add improvements to this in version 1.2
         contentPadding: EdgeInsets.zero,
+
+        // isDense: true,
+
       ),
       keyboardType: widget.keyboardType,
+      validator: widget.validator,
+      onChanged: widget.onChanged,
     );
 
     Widget container;
@@ -101,7 +114,7 @@ class _UITextFormField extends State<UITextFormField> {
           Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
       if (theme.inputDecorationTheme.border.isOutline) {
         OutlineInputBorder outlineInputBorder =
-            theme.inputDecorationTheme.border as OutlineInputBorder;
+        theme.inputDecorationTheme.border as OutlineInputBorder;
         borderRadius = outlineInputBorder.borderRadius;
       }
     } else {

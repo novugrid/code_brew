@@ -16,16 +16,19 @@ class UIButton extends MaterialButton {
   final double borderWidth;
   final bool fillContainer;
   final double height;
+  final double width;
   final EdgeInsets padding;
   final Alignment alignment;
   final double elevation;
+  final ShapeBorder shape;
+  final BorderSide borderSide;
 
   const UIButton({
     this.type,
     @required this.onPressed,
     this.child,
     this.text,
-    this.alignment,
+    this.alignment = Alignment.center,
     this.icon,
     this.iconAlignment = UIAlignment.left,
     this.iconSpacing = 0,
@@ -34,8 +37,11 @@ class UIButton extends MaterialButton {
     this.borderWidth = 1.0,
     this.fillContainer = false,
     this.height,
+    this.width,
     this.padding,
     this.elevation,
+    this.shape,
+    this.borderSide,
   }) : super(onPressed: onPressed);
 
   @override
@@ -66,7 +72,7 @@ class UIButton extends MaterialButton {
       switch (iconAlignment) {
         case UIAlignment.left:
           current = Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               icon,
               SizedBox(
@@ -139,10 +145,11 @@ class UIButton extends MaterialButton {
           onPressed: onPressed,
           child: current,
           color: color,
-          borderSide: BorderSide(color: color, width: 2.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
+          borderSide: this.borderSide ?? BorderSide(color: color, width: 2.0),
+          shape: this.shape ??
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
           textColor: textColor,
           padding: this.padding,
         );
@@ -154,15 +161,30 @@ class UIButton extends MaterialButton {
       child: button,
     );*/
 
+    var width = this.width ?? theme.buttonTheme.minWidth;
+
     if (fillContainer || alignment != null) {
-      // print("Fill Container: $fillContainer");
+      color = this.type == UIButtonType.raised && alignment != null
+          ? color
+          : Colors.transparent;
+    }
+    if (fillContainer) {
+      width = double.infinity;
+    }
+    button = ConstrainedBox(
+      constraints: BoxConstraints(
+        minWidth: width,
+        maxWidth: this.width ?? double.infinity,
+        minHeight: height ?? theme.buttonTheme.height,
+        maxHeight: height ?? double.infinity,
+      ),
+      child: button,
+    );
+
+    if (alignment != null) {
       button = Container(
-        width: fillContainer ? double.infinity : theme.buttonTheme.minWidth,
-        height: height ?? theme.buttonTheme.height,
         alignment: this.alignment,
-        color: this.type == UIButtonType.raised && alignment != null
-            ? color
-            : Colors.transparent,
+        // color: color,
         child: button,
       );
     }

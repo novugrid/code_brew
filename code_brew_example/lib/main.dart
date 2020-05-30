@@ -3,6 +3,7 @@ import 'package:code_brew_example/ui/UIRoutes.dart';
 import 'package:code_brew_example/ui/features/ImagesExamples.dart';
 import 'package:code_brew_example/ui/features/buttons/ButtonsExampleScreen.dart';
 import 'package:code_brew_example/ui/features/forms/FormsWidgets.dart';
+import 'package:code_brew_example/ui/list/GridExampleScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:code_brew/code_brew.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         UIRoutes.formsWidgetScreen: (context) => FormsWidgetScreen(),
         UIRoutes.imagesWidgetScreen: (context) => ImagesExamples(),
         UIRoutes.buttonWidgetScreen: (context) => ButtonsExampleScreen(),
+        UIRoutes.gridScreen: (context) => GridExampleScreen(),
       },
     );
   }

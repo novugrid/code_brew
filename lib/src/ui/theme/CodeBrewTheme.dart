@@ -6,9 +6,13 @@ class CodeBrewTheme {
 
   static TextStyle textFieldStyle = TextStyle();
   static TextStyle defaultText = TextStyle();
+
+  static TextStyle dialogButtonTextStyle = TextStyle();
+
   static TextStyle dropDownTheme = TextStyle(); //TODO:  we need to expand on this later
   static Decoration dropDownDecoration = BoxDecoration();
   static EdgeInsets dropDownPadding;
+
 
   static ThemeData green() {
     return ThemeData(
