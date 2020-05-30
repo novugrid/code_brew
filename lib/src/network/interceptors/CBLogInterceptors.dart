@@ -15,14 +15,14 @@ class LoggingInterceptor extends Interceptor{
     print("Headers: ${options.headers}");
     print("Body Params: ${json.encode(options.data)}");
 
-    print("<-- END HTTP");
+    print("--> OUT HTTP");
     return super.onRequest(options);
   }
 
   @override
   Future onResponse(Response response) {
     print(
-        "<-- ${response.statusCode} ${response.request.method} ${response.request.path}");
+        "<--- ${response.statusCode} ${response.request.method} ${response.request.path}");
     String responseAsString = response.data.toString();
     if (responseAsString.length > _maxCharactersPerLine) {
       int iterations =
@@ -38,14 +38,14 @@ class LoggingInterceptor extends Interceptor{
     } else {
       print(response.data);
     }
-    print("<-- END HTTP");
+    print("<--- END INCOMING HTTP");
 
     return super.onResponse(response);
   }
 
   @override
   Future onError(DioError err) {
-    print("<-- Error -->");
+    print("<------ ON ERROR -------->");
     print(err.error);
     print(err.message);
     if (err.response != null) {

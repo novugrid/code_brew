@@ -6,6 +6,7 @@ class UIRoutes {
   static String formsWidgetScreen = "/formsScreen";
   static String imagesWidgetScreen = "/imagesScreen";
   static String buttonWidgetScreen = "buttons";
+  static String gridScreen = "/gridScreen";
 
   navigator(BuildContext context) {
     Navigator.of(context).pushNamed("");
@@ -19,6 +20,9 @@ class UIRoutes {
   }
   static void navigateToButtonScreen(BuildContext context) {
       Navigator.pushNamed(context, buttonWidgetScreen);
+  }
+  static void navigateToGridScreen(BuildContext context) {
+      Navigator.pushNamed(context, gridScreen);
   }
 
 }

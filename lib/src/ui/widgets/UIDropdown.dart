@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class UIDropdown<T> extends StatefulWidget {
   final List<T> items;
   final T initialValue;
+  final Widget hint;
   final Widget icon;
   final Widget underline;
   final EdgeInsetsGeometry padding;
@@ -16,6 +17,7 @@ class UIDropdown<T> extends StatefulWidget {
     @required this.initialValue,
     @required this.builder,
     this.selectedItemBuilder,
+        this.hint,
     this.icon,
     this.underline,
     this.padding,
@@ -50,6 +52,7 @@ class _UIDropdownState<T> extends State<UIDropdown<T>> {
     // The Dropdown
     Widget dropDownButton = DropdownButton<T>(
       value: dropdownValue,
+      hint: widget.hint,
       icon: widget.icon ?? Icon(Icons.arrow_drop_down),
       iconSize: 20,
       elevation: 16,

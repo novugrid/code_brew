@@ -25,22 +25,28 @@ class UIListView<T> extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final bool multiSelectEnabled;
   final int maxSelectionCount;
+  final int minSelectionCount;
+  final ValueChanged<bool> onMaxMultiSelectionCompleted; // Max
+  final ValueChanged<bool> onMinMultiSelectionCompleted;
   final ValueChanged<bool> onMultiSelection;
   RefreshController refreshController;
 
-  UIListView(
-      {@required this.itemBuilder,
-      this.model,
-      this.urlModel,
-      this.searchable = false,
-      this.itemCount = 0,
-      this.padding = EdgeInsets.zero,
-      this.multiSelectEnabled = false,
-      this.maxSelectionCount,
-        this.refreshController,
-      this.onMultiSelection})
-      : assert(itemCount != null),
-        assert(multiSelectEnabled ? onMultiSelection != null : true);
+  UIListView({
+    @required this.itemBuilder,
+    this.model,
+    this.urlModel,
+    this.searchable = false,
+    this.itemCount = 0,
+    this.padding = EdgeInsets.zero,
+    this.multiSelectEnabled = false,
+    this.maxSelectionCount,
+    this.minSelectionCount = 1,
+    this.refreshController,
+    this.onMaxMultiSelectionCompleted,
+    this.onMinMultiSelectionCompleted,
+  })  : assert(itemCount != null),
+        assert(
+            multiSelectEnabled ? onMaxMultiSelectionCompleted != null : true);
 
   @override
   State<StatefulWidget> createState() {
@@ -53,10 +59,10 @@ class _UIListViewState<T> extends State<UIListView> {
 
   var searchController = TextEditingController();
   String currentSearch = "";
+  ValueNotifier<bool> showSearchLoading = ValueNotifier(false);
   ValueNotifier<bool> moreLoadingNotifier = ValueNotifier(false);
   RefreshController _controller = RefreshController();
   PaginatedDataModel model;
-  bool showSearchLoading = false;
   bool showLoading;
 
   List items = [];
@@ -156,22 +162,48 @@ class _UIListViewState<T> extends State<UIListView> {
                         this.selectedItems.remove(index);
 
                         /// Once a max selection count is non null, that mean the completion is false
-                        widget
-                            .onMultiSelection(widget.maxSelectionCount == null);
-                      } else {
+                        widget.onMaxMultiSelectionCompleted(
+                            widget.maxSelectionCount == null);
+
+                        if (widget.minSelectionCount > this.selectedItems.length) {
+                          widget.onMinMultiSelectionCompleted(false);
+                        }
+
+                      } else { //
+
+                        if (widget.maxSelectionCount == null) {
+                          this.selectedItems.add(index);
+                        } else {
+                          if (widget.maxSelectionCount > this.selectedItems.length) {
+                            this.selectedItems.add(index);
+                          }
+                        }
+
+                        /// Check for the minimum selection
+                        if (widget.minSelectionCount > 0) {
+                          if (widget.minSelectionCount <=
+                              this.selectedItems.length) {
+                            widget.onMinMultiSelectionCompleted(true);
+                          } else {
+                            widget.onMinMultiSelectionCompleted(false);
+                          }
+                        }
+
                         /// Checks for the max selection count and fires a completed true if selection count has been met
                         if (widget.maxSelectionCount != null) {
                           if (widget.maxSelectionCount >
                               this.selectedItems.length) {
-                            this.selectedItems.add(index);
-                            widget.onMultiSelection(widget.maxSelectionCount ==
-                                this.selectedItems.length);
+                            // this.selectedItems.add(index);
+                            widget.onMaxMultiSelectionCompleted(
+                                widget.maxSelectionCount ==
+                                    this.selectedItems.length);
                           } else {
-                            widget.onMultiSelection(true); // completed is true
+                            widget.onMaxMultiSelectionCompleted(
+                                true); // completed is true
                           }
                         } else {
-                          this.selectedItems.add(index);
-                          widget.onMultiSelection(true);
+                          // this.selectedItems.add(index);
+                          widget.onMaxMultiSelectionCompleted(true);
                         }
                       }
                       // print("Activate Multiple Selection..>\n ${this.selectedItems}");

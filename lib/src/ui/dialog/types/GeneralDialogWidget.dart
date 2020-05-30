@@ -1,3 +1,4 @@
+import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/helpers/extension.dart';
 import 'package:code_brew/src/ui/dialog/dialog_actions.dart';
 import 'package:flutter/material.dart';
@@ -29,24 +30,23 @@ class GeneralDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 20,
-      ),
+      padding: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           if (icon != null) icon,
-          if (title.isNullOrEmpty)
+          if (!title.isNullOrEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 5, top: 15),
               child: Row(
                 children: <Widget>[
                   Expanded(
-                      child: Text(
-                    title,
-                    style: titleStyle,
-                    textAlign: TextAlign.center,
-                  )),
+                    child: Text(
+                      title,
+                      style: Theme.of(context).dialogTheme.titleTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -57,7 +57,9 @@ class GeneralDialogWidget extends StatelessWidget {
                 Expanded(
                     child: Text(
                   message,
-                  style: messageStyle,
+                  style: Theme.of(context)
+                      .dialogTheme
+                      .contentTextStyle, //  messageStyle,
                   textAlign: TextAlign.center,
                 ))
               ],
@@ -70,7 +72,8 @@ class GeneralDialogWidget extends StatelessWidget {
                 FlatButton(
                   child: Text(
                     btnText,
-                    style: TextStyle(color: Theme.of(context).primaryColor),
+                    style: CodeBrewTheme
+                        .dialogButtonTextStyle, // TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onPressed: onPositiveBtnClicked ??
                       () {

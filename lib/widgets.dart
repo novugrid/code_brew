@@ -8,6 +8,7 @@ export 'src/ui/widgets/UIDropdown.dart';
 export 'src/ui/widgets/UIPinField.dart';
 export 'src/ui/widgets/UIButton.dart';
 export 'src/ui/widgets/UITextFormField.dart';
+export 'src/ui/widgets/UIGridView.dart';
 
 // CB Views
 export 'src/ui/modules/emaillogin/CBViewEmailLogin.dart';

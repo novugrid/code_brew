@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     type: BottomNavigationBarType.fixed,
                     items: [
                       bottomNavWidget(Icons.home),
-                      bottomNavWidget(Icons.shopping_cart),
+                      bottomNavWidget(Icons.widgets),
                       bottomNavWidget(Icons.notifications),
                       bottomNavWidget(Icons.person),
                     ]),
