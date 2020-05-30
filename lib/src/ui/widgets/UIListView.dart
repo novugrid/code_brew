@@ -44,6 +44,7 @@ class UIListView<T> extends StatefulWidget {
     this.refreshController,
     this.onMaxMultiSelectionCompleted,
     this.onMinMultiSelectionCompleted,
+    this.onMultiSelection,
   })  : assert(itemCount != null),
         assert(
             multiSelectEnabled ? onMaxMultiSelectionCompleted != null : true);
@@ -59,7 +60,7 @@ class _UIListViewState<T> extends State<UIListView> {
 
   var searchController = TextEditingController();
   String currentSearch = "";
-  ValueNotifier<bool> showSearchLoading = ValueNotifier(false);
+  bool showSearchLoading = false;
   ValueNotifier<bool> moreLoadingNotifier = ValueNotifier(false);
   RefreshController _controller = RefreshController();
   PaginatedDataModel model;
