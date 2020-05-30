@@ -28,6 +28,8 @@ class UIListView<T> extends StatefulWidget {
   final int minSelectionCount;
   final ValueChanged<bool> onMaxMultiSelectionCompleted; // Max
   final ValueChanged<bool> onMinMultiSelectionCompleted;
+  final ValueChanged<bool> onMultiSelection;
+  RefreshController refreshController;
 
   UIListView({
     @required this.itemBuilder,
@@ -39,8 +41,10 @@ class UIListView<T> extends StatefulWidget {
     this.multiSelectEnabled = false,
     this.maxSelectionCount,
     this.minSelectionCount = 1,
+    this.refreshController,
     this.onMaxMultiSelectionCompleted,
     this.onMinMultiSelectionCompleted,
+    this.onMultiSelection,
   })  : assert(itemCount != null),
         assert(
             multiSelectEnabled ? onMaxMultiSelectionCompleted != null : true);
@@ -56,10 +60,11 @@ class _UIListViewState<T> extends State<UIListView> {
 
   var searchController = TextEditingController();
   String currentSearch = "";
-  ValueNotifier<bool> showSearchLoading = ValueNotifier(false);
+  bool showSearchLoading = false;
   ValueNotifier<bool> moreLoadingNotifier = ValueNotifier(false);
   RefreshController _controller = RefreshController();
   PaginatedDataModel model;
+  bool showLoading;
 
   List items = [];
   List<int> selectedItems = [];
@@ -67,6 +72,7 @@ class _UIListViewState<T> extends State<UIListView> {
   @override
   void initState() {
     if (widget.urlModel != null) {
+      _controller = widget.refreshController ?? RefreshController();
       baseBloc = BaseBloc(widget.model, widget.urlModel);
       baseBloc.add(BlocEvent.fetch);
       searchController.addListener(onSearch);
@@ -78,7 +84,7 @@ class _UIListViewState<T> extends State<UIListView> {
   void onSearch() {
     if (currentSearch != searchController.text) {
       currentSearch = searchController.text;
-      showSearchLoading.value = true;
+      showLoading = true;
       baseBloc.search(searchController.text);
       items = [];
     }
@@ -88,12 +94,6 @@ class _UIListViewState<T> extends State<UIListView> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        widget.searchable
-            ? UISearchBar(
-                controller: searchController,
-                showLoadingNotifier: showSearchLoading,
-              )
-            : SizedBox(),
         if (widget.urlModel != null)
           Expanded(
             child: StreamBuilder<BlocModel>(
@@ -108,36 +108,43 @@ class _UIListViewState<T> extends State<UIListView> {
                       );
                     case ConnectionState.active:
                     case ConnectionState.done:
-                      _handleBlocEvent(snapshot.data.event);
+                      _handleBlocState(snapshot.data);
                       model = snapshot.data.data;
-                      setItems(model);
-                      if (items.isEmpty) {
-                        return Center(
-                          child: Text("No user found"),
-                        );
-                      } else {
-                        return SmartRefresher(
-                          controller: _controller,
-                          enablePullDown: true,
-                          enablePullUp: items.length < model.total,
-                          onRefresh: () {
-                            items = [];
-                            baseBloc.add(BlocEvent.refresh);
-                          },
-                          onLoading: () {
-                            baseBloc.add(BlocEvent.loadMore);
-                          },
-                          child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: items.length,
-                              itemBuilder: (context, index) {
-                                return widget.itemBuilder(
-                                    context, items[index], index, false);
-                              }),
-                          header: WaterDropMaterialHeader(),
-                          footer: ClassicFooter(),
-                        );
-                      }
+                      return Column(
+                        children: <Widget>[
+                          if(widget.searchable) UISearchBar(
+                            controller: searchController,
+                            showLoadingNotifier: ValueNotifier(
+                                showSearchLoading),
+                          ),
+                          if(items.isEmpty) Center(
+                            child: Text("No item found"),)
+                          else
+                            Expanded(
+                              child: SmartRefresher(
+                                controller: _controller,
+                                enablePullDown: true,
+                                enablePullUp: items.length < model.total,
+                                onRefresh: () {
+                                  items = [];
+                                  baseBloc.add(BlocEvent.refresh);
+                                },
+                                onLoading: () {
+                                  baseBloc.add(BlocEvent.loadMore);
+                                },
+                                child: ListView.builder(
+                                    padding: widget.padding,
+                                    itemCount: items.length,
+                                    itemBuilder: (context, index) {
+                                      return widget.itemBuilder(
+                                          context, items[index], index, false);
+                                    }),
+                                header: WaterDropMaterialHeader(),
+                                footer: ClassicFooter(),
+                              ),
+                            )
+                        ],
+                      );
                   }
                 }),
           )
@@ -239,23 +246,37 @@ class _UIListViewState<T> extends State<UIListView> {
     } catch (err) {}
   }
 
-  void _handleBlocEvent(BlocEvent event) {
-    switch (event) {
-      case BlocEvent.fetch:
+  void _handleBlocState(BlocModel model) {
+    switch (model.state) {
+      case BlocState.loading:
         break;
-      case BlocEvent.refresh:
-        _controller.refreshCompleted();
+      case BlocState.dataLoaded:
+        items = model.data.data;
         break;
-      case BlocEvent.loadMore:
+      case BlocState.error:
+        break;
+      case BlocState.loadingMoreData:
+
+        break;
+      case BlocState.moreDataLoaded:
+        items.addAll(model.data.data);
         _controller.loadComplete();
         break;
-      case BlocEvent.search:
-        showSearchLoading.value = false;
+      case BlocState.dataRefreshed:
+        items = model.data.data;
+        _controller.refreshCompleted();
         break;
-      default:
+      case BlocState.searchDataReturned:
+        showSearchLoading = false;
+        items = model.data.data;
+        break;
+      case BlocState.searchingData:
+        showSearchLoading = true;
+        items = model.data.data;
         break;
     }
   }
+
 
   int getItemCount(CBBaseModel model) {
     if (model.data is List) {

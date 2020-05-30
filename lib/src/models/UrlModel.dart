@@ -33,21 +33,32 @@ class UrlModel {
   /// null if not specified
   int limit;
 
+  ///
+  ///
+  Map<String, dynamic> filters;
+
 
   UrlModel({@required this.baseUrl,
     this.searchUrl,
     this.searchKey,
     this.page = 1,
-    this.limit});
+    this.limit,
+    this.filters,
+  });
 
   /// build the url into a string
   String toUrl({String searchTerm}) {
-    String url = searchTerm != null ? "$searchUrl?$searchKey=$searchTerm" :
-        "$baseUrl/?";
+    String url = (searchTerm != null && searchTerm.isNotEmpty)
+        ? "$searchUrl?$searchKey=$searchTerm"
+        :
+    baseUrl;
+    if (!url.contains("?")) url += "?";
     if (limit != null && limit != 0) {
       url += "&page=$page&limit=$limit";
     }
-    print("url sent: $url");
+    if (filters != null) {
+      filters.forEach((key, value) => url += "&$key=$value");
+    }
     return url;
   }
 }
