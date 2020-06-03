@@ -14,6 +14,7 @@ class UITextFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
+  final maxLines;
 
   UITextFormField({
     this.controller,
@@ -27,6 +28,7 @@ class UITextFormField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.onChanged,
+    this.maxLines = 1,
   });
 
   @override
@@ -56,6 +58,7 @@ class _UITextFormField extends State<UITextFormField> {
         // isDense: true,
 
       ),
+      maxLines: widget.maxLines,
       keyboardType: widget.keyboardType,
       validator: widget.validator,
       onChanged: widget.onChanged,
