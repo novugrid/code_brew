@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 ///
-/// project: kobo_mobile_core
+///
 /// @package:
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2019-06-25

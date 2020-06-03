@@ -38,7 +38,10 @@ class ConfirmationWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+              style: Theme
+                  .of(context)
+                  .dialogTheme
+                  .titleTextStyle,
             ),
           ),
         Padding(
@@ -49,11 +52,10 @@ class ConfirmationWidget extends StatelessWidget {
                   child: Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black38,
-                    ),
+                    style: Theme
+                        .of(context)
+                        .dialogTheme
+                        .contentTextStyle,
                   ))
             ],
           ),
@@ -78,9 +80,8 @@ class ConfirmationWidget extends StatelessWidget {
                   text: "Submit",
                   onPositiveBtnClicked: onPositiveBtnClicked,
                   backgroundColor: Colors.transparent,
-                  textStyle: TextStyle(color: Theme
-                      .of(context)
-                      .primaryColor),
+                  textStyle: CodeBrewTheme
+                      .dialogButtonTextStyle,
                 )),
           ],
         )
