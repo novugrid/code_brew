@@ -1,5 +1,5 @@
 import 'package:code_brew/code_brew.dart';
-import 'package:code_brew/src/bloc/BaseBloc.dart';
+import 'package:code_brew/src/bloc/cb_list_bloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/UrlModel.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +17,15 @@ class CBDataTable extends StatefulWidget {
   PaginatedDataModel model;
   UrlModel urlModel;
   List<DataColumn> headers;
+  CBListBloc bloc;
 
   CBDataTable(
       {@required this.headers,
       @required this.urlModel,
       @required this.model,
-      @required this.rowItemBuilder});
+      @required this.rowItemBuilder,
+        this.bloc,
+      });
 
   @override
   State<StatefulWidget> createState() {
@@ -31,7 +34,7 @@ class CBDataTable extends StatefulWidget {
 }
 
 class _CBDataTableState extends State<CBDataTable> {
-  BaseBloc baseBloc;
+  CBListBloc baseBloc;
   var _searchController = TextEditingController();
   String currentSearch = "";
   List items = [];
@@ -40,7 +43,7 @@ class _CBDataTableState extends State<CBDataTable> {
 
   @override
   void initState() {
-    baseBloc = BaseBloc(widget.model, widget.urlModel);
+    baseBloc = widget.bloc ?? CBListBloc(widget.model, widget.urlModel);
     baseBloc.add(BlocEvent.fetch);
     _searchController.addListener((){
       if(_searchController.text != currentSearch) {
