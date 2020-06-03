@@ -1,7 +1,6 @@
 import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/bloc/BaseBloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
-import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:code_brew/src/models/UrlModel.dart';
 import 'package:flutter/material.dart';
 
@@ -115,7 +114,7 @@ class _CBDataTableState extends State<CBDataTable> {
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
                                   child: DataTable(
-                                      // showCheckboxColumn: false,
+                                      showCheckboxColumn: false,
                                       columns: widget.headers,
                                       rows: _buildDataRow(model)),
                                 ),

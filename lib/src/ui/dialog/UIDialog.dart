@@ -87,8 +87,8 @@ class UIDialog {
     switch (type) {
       case DialogType.confirmation:
         return ConfirmationWidget(
-          title: "Delete Stuff",
-          message:
+          title: title ?? "Delete Stuff",
+          message: message ??
               "Confirm this action before you proceed, Really a cool message to be passed, and you really "
               "need to check this stuff out cos its a great "
               "stuff holding stuff together",
@@ -112,15 +112,17 @@ class UIDialog {
         );
       case DialogType.warning:
         return ConfirmationWidget(
-            message:
+            message: message ??
                 "Confirm this action before you proceed, Really a cool message to be passed, and you really "
                 "need to check this stuff out cos its a great "
                 "stuff holding stuff together",
-            onPositiveBtnClicked: () {});
+            title: title ?? "Confirm this",
+            onNegativeBtnClicked: onNegativeBtnClicked,
+            onPositiveBtnClicked: onPositiveBtnClicked);
       case DialogType.success:
         return GeneralDialogWidget(
-          title: "Hello!",
-          message: "Item deleted auccessfully from the api.",
+          title: title ?? "Hello!",
+          message: message ?? "Item deleted auccessfully from the api.",
           btnText: "Ok",
           icon: Icon(
             Icons.check_circle_outline,
