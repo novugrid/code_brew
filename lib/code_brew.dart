@@ -22,6 +22,8 @@ export 'src/network/CodeBrewNetworker.dart';
 export 'src/CodeBrewMain.dart';
 export 'src/ui/widgets/UIListView.dart';
 export 'widgets.dart';
+export 'src/bloc/cb_list_bloc.dart';
+export 'src/models/BlocModel.dart';
 
 /// A Calculator.
 class Calculator {

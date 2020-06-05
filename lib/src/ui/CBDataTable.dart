@@ -1,5 +1,5 @@
 import 'package:code_brew/code_brew.dart';
-import 'package:code_brew/src/bloc/BaseBloc.dart';
+import 'package:code_brew/src/bloc/cb_list_bloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/UrlModel.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +17,20 @@ class CBDataTable extends StatefulWidget {
   PaginatedDataModel model;
   UrlModel urlModel;
   List<DataColumn> headers;
+  Widget pageHeader;
+  bool isSearchable, shouldPaginate;
+  CBListBloc bloc;
 
   CBDataTable(
       {@required this.headers,
       @required this.urlModel,
       @required this.model,
-      @required this.rowItemBuilder});
+      @required this.rowItemBuilder,
+        this.bloc,
+        this.pageHeader = const SizedBox(),
+        this.isSearchable = true,
+        this.shouldPaginate = true,
+      });
 
   @override
   State<StatefulWidget> createState() {
@@ -31,7 +39,7 @@ class CBDataTable extends StatefulWidget {
 }
 
 class _CBDataTableState extends State<CBDataTable> {
-  BaseBloc baseBloc;
+  CBListBloc baseBloc;
   var _searchController = TextEditingController();
   String currentSearch = "";
   List items = [];
@@ -40,7 +48,7 @@ class _CBDataTableState extends State<CBDataTable> {
 
   @override
   void initState() {
-    baseBloc = BaseBloc(widget.model, widget.urlModel);
+    baseBloc = widget.bloc ?? CBListBloc(widget.model, widget.urlModel);
     baseBloc.add(BlocEvent.fetch);
     _searchController.addListener((){
       if(_searchController.text != currentSearch) {
@@ -59,7 +67,8 @@ class _CBDataTableState extends State<CBDataTable> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Container(
+            Expanded(child: widget.pageHeader),
+            if(widget.isSearchable) Container(
               height: 50,
               margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               width: 300,
@@ -81,10 +90,7 @@ class _CBDataTableState extends State<CBDataTable> {
                   suffixIcon: Icon(Icons.search),
                   errorBorder: InputBorder.none,
                 ),
-                style: TextStyle(
-                  fontFamily: "ARoman",
-                  fontSize: 14
-                ),
+                style: Theme.of(context).inputDecorationTheme.labelStyle,
               ),
             )
           ],
@@ -121,6 +127,7 @@ class _CBDataTableState extends State<CBDataTable> {
                               ),
                             ),
                             SizedBox(height: 10,),
+                            if(widget.shouldPaginate)
                             if (snapshot.data.state !=
                                 BlocState.loadingMoreData)
                               Row(
