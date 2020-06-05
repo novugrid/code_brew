@@ -11,11 +11,11 @@ abstract class PaginatedDataModel<T> {
 
   PaginatedDataModel<T> fromJson(Map<String, dynamic> data) {
     total = data["total"] ?? this.data.length;
-    currentPage = data["current_page"];
-    nextPage = data["next_page"];
-    previousPage = data["previous_page"];
-    totalPage = data["total_page"];
-    limit = data["limit"];
+    currentPage = data["current_page"] ?? 1;
+    nextPage = data["next_page"] ?? 1;
+    previousPage = data["previous_page"] ?? 1;
+    totalPage = data["total_page"] ?? 1;
+    limit = data["limit"] ?? total;
     if (totalPage == null && limit != null) {
       totalPage = (total / limit).round();
     }

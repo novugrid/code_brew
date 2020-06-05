@@ -9,7 +9,7 @@ import 'package:rxdart/rxdart.dart';
 /// @package: bloc
 /// @author dammyololade <dammyololade2010@gmail.com>
 /// created on 2020-01-11
-class BaseBloc {
+class CBListBloc {
   PaginatedDataModel model;
   Repository repository = Repository();
   PublishSubject<BlocModel> blocController = PublishSubject<BlocModel>();
@@ -21,7 +21,7 @@ class BaseBloc {
   BlocEvent currentEvent;
   UrlModel urlModel;
 
-  BaseBloc(this.model, this.urlModel);
+  CBListBloc(this.model, this.urlModel);
 
   void add(BlocEvent event) async {
     currentEvent = event;

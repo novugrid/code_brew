@@ -1,5 +1,5 @@
 import 'package:code_brew/code_brew.dart';
-import 'package:code_brew/src/bloc/BaseBloc.dart';
+import 'package:code_brew/src/bloc/cb_list_bloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/CBBaseModel.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/indicator/classic_indicator.dart';
@@ -8,7 +8,7 @@ import 'package:code_brew/src/ui/list/smart_refresher/smart_refresher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../bloc/BaseBloc.dart';
+import '../../bloc/cb_list_bloc.dart';
 
 /// created on 2020-01-11
 /// [urlModel] if availble make a network call else just use the count to generate a list
@@ -56,7 +56,7 @@ class UIListView<T> extends StatefulWidget {
 }
 
 class _UIListViewState<T> extends State<UIListView> {
-  BaseBloc baseBloc;
+  CBListBloc baseBloc;
 
   var searchController = TextEditingController();
   String currentSearch = "";
@@ -73,7 +73,7 @@ class _UIListViewState<T> extends State<UIListView> {
   void initState() {
     if (widget.urlModel != null) {
       _controller = widget.refreshController ?? RefreshController();
-      baseBloc = BaseBloc(widget.model, widget.urlModel);
+      baseBloc = CBListBloc(widget.model, widget.urlModel);
       baseBloc.add(BlocEvent.fetch);
       searchController.addListener(onSearch);
     }
