@@ -17,6 +17,8 @@ class CBDataTable extends StatefulWidget {
   PaginatedDataModel model;
   UrlModel urlModel;
   List<DataColumn> headers;
+  Widget pageHeader;
+  bool isSearchable, shouldPaginate;
   CBListBloc bloc;
 
   CBDataTable(
@@ -25,6 +27,9 @@ class CBDataTable extends StatefulWidget {
       @required this.model,
       @required this.rowItemBuilder,
         this.bloc,
+        this.pageHeader = const SizedBox(),
+        this.isSearchable = true,
+        this.shouldPaginate = true,
       });
 
   @override
@@ -62,7 +67,8 @@ class _CBDataTableState extends State<CBDataTable> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Container(
+            Expanded(child: widget.pageHeader),
+            if(widget.isSearchable) Container(
               height: 50,
               margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               width: 300,
@@ -84,10 +90,7 @@ class _CBDataTableState extends State<CBDataTable> {
                   suffixIcon: Icon(Icons.search),
                   errorBorder: InputBorder.none,
                 ),
-                style: TextStyle(
-                  fontFamily: "ARoman",
-                  fontSize: 14
-                ),
+                style: Theme.of(context).inputDecorationTheme.labelStyle,
               ),
             )
           ],
@@ -124,6 +127,7 @@ class _CBDataTableState extends State<CBDataTable> {
                               ),
                             ),
                             SizedBox(height: 10,),
+                            if(widget.shouldPaginate)
                             if (snapshot.data.state !=
                                 BlocState.loadingMoreData)
                               Row(
