@@ -25,6 +25,10 @@ export 'widgets.dart';
 export 'src/bloc/cb_list_bloc.dart';
 export 'src/models/BlocModel.dart';
 
+// Services
+export 'src/helpers/CBNumberHelper.dart';
+export 'src/uiservices/NumberOnlyTextInputFormatter.dart';
+
 /// A Calculator.
 class Calculator {
   /// Returns [value] plus 1.

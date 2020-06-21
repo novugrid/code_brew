@@ -10,5 +10,8 @@ export 'src/ui/widgets/UIButton.dart';
 export 'src/ui/widgets/UITextFormField.dart';
 export 'src/ui/widgets/UIGridView.dart';
 
-// CB Views
+// CB Views & Screen
 export 'src/ui/modules/emaillogin/CBViewEmailLogin.dart';
+
+// Code Brew Models
+export 'src/models/CBBaseListViewModel.dart';

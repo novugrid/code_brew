@@ -120,9 +120,12 @@ class _CBDataTableState extends State<CBDataTable> {
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
                                   child: DataTable(
+
                                       showCheckboxColumn: false,
                                       columns: widget.headers,
-                                      rows: _buildDataRow(model)),
+                                      rows: _buildDataRow(model),
+
+                                  ),
                                 ),
                               ),
                             ),

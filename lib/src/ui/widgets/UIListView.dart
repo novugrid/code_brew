@@ -1,27 +1,15 @@
 import 'package:code_brew/code_brew.dart';
-import 'package:code_brew/src/bloc/cb_list_bloc.dart';
-import 'package:code_brew/src/models/BlocModel.dart';
-import 'package:code_brew/src/models/CBBaseModel.dart';
-import 'package:code_brew/src/ui/list/smart_refresher/indicator/classic_indicator.dart';
-import 'package:code_brew/src/ui/list/smart_refresher/indicator/material_indicator.dart';
+import 'package:code_brew/src/network/NetworkUtil.dart';
 import 'package:code_brew/src/ui/list/smart_refresher/smart_refresher.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../bloc/cb_list_bloc.dart';
+class UIListView<T extends CBBaseListViewModel> extends StatefulWidget {
 
-/// created on 2020-01-11
-/// [urlModel] if availble make a network call else just use the count to generate a list
-/// [itemCount] must not be null when [urlModel] is null also
-/// [onMultiSelection] tells if a selection max count condition has been met
-class UIListView<T> extends StatefulWidget {
-  final Widget Function(
-          BuildContext context, dynamic data, int index, bool isSelected)
-      itemBuilder;
-  final PaginatedDataModel model;
-  final UrlModel urlModel;
-  final bool searchable;
+  final Widget Function(BuildContext context, T data, int index, bool isSelected) itemBuilder;
+  final int Function(T data) itemCounter;
   final int itemCount;
+  final bool searchable;
   final EdgeInsetsGeometry padding;
   final bool multiSelectEnabled;
   final int maxSelectionCount;
@@ -29,12 +17,17 @@ class UIListView<T> extends StatefulWidget {
   final ValueChanged<bool> onMaxMultiSelectionCompleted; // Max
   final ValueChanged<bool> onMinMultiSelectionCompleted;
   final ValueChanged<bool> onMultiSelection;
-  RefreshController refreshController;
+  final RefreshController refreshController;
+  final String url;
+  T responseModel;
+  final Widget separator;
+
 
   UIListView({
     @required this.itemBuilder,
-    this.model,
-    this.urlModel,
+    this.itemCounter,
+//    this.model,
+//    this.urlModel,
     this.searchable = false,
     this.itemCount = 0,
     this.padding = EdgeInsets.zero,
@@ -45,252 +38,179 @@ class UIListView<T> extends StatefulWidget {
     this.onMaxMultiSelectionCompleted,
     this.onMinMultiSelectionCompleted,
     this.onMultiSelection,
+    this.url,
+    this.responseModel,
+    this.separator,
   })  : assert(itemCount != null),
         assert(
-            multiSelectEnabled ? onMaxMultiSelectionCompleted != null : true);
+        multiSelectEnabled ? onMaxMultiSelectionCompleted != null : true);
 
   @override
-  State<StatefulWidget> createState() {
-    return _UIListViewState<T>();
-  }
+  _UIListViewState createState() => _UIListViewState<T>();
+
 }
 
-class _UIListViewState<T> extends State<UIListView> {
-  CBListBloc baseBloc;
+class _UIListViewState<T extends CBBaseListViewModel> extends State<UIListView> {
 
-  var searchController = TextEditingController();
-  String currentSearch = "";
-  bool showSearchLoading = false;
-  ValueNotifier<bool> moreLoadingNotifier = ValueNotifier(false);
-  RefreshController _controller = RefreshController();
-  PaginatedDataModel model;
-  bool showLoading;
+  ListBloc listBloc;
+
+  RefreshController _refreshController = RefreshController();
 
   List items = [];
   List<int> selectedItems = [];
 
   @override
   void initState() {
-    if (widget.urlModel != null) {
-      _controller = widget.refreshController ?? RefreshController();
-      baseBloc = CBListBloc(widget.model, widget.urlModel);
-      baseBloc.add(BlocEvent.fetch);
-      searchController.addListener(onSearch);
-    }
-
     super.initState();
-  }
+    listBloc = ListBloc();
+    listBloc.responseModel = widget.responseModel;
 
-  void onSearch() {
-    if (currentSearch != searchController.text) {
-      currentSearch = searchController.text;
-      showLoading = true;
-      baseBloc.search(searchController.text);
-      items = [];
+    if (widget.url == null) { // should be replaces by a better check
+
+      listBloc.apiSubject.add(ApiCallStates.SUCCESS);
+
+    } else {
+      listBloc.url = widget.url;
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      listBloc.fetch();
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
-        if (widget.urlModel != null)
-          Expanded(
-            child: StreamBuilder<BlocModel>(
-                stream: baseBloc.outBlocModel,
-                // ignore: missing_return
-                builder: (context, AsyncSnapshot<BlocModel> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      _handleBlocState(snapshot.data);
-                      model = snapshot.data.data;
-                      return Column(
-                        children: <Widget>[
-                          if(widget.searchable) UISearchBar(
-                            controller: searchController,
-                            showLoadingNotifier: ValueNotifier(
-                                showSearchLoading),
-                          ),
-                          if(items.isEmpty) Center(
-                            child: Text("No item found"),)
-                          else
-                            Expanded(
-                              child: SmartRefresher(
-                                controller: _controller,
-                                enablePullDown: true,
-                                enablePullUp: items.length < model.total,
-                                onRefresh: () {
-                                  items = [];
-                                  baseBloc.add(BlocEvent.refresh);
-                                },
-                                onLoading: () {
-                                  baseBloc.add(BlocEvent.loadMore);
-                                },
-                                child: ListView.builder(
-                                    padding: widget.padding,
-                                    itemCount: items.length,
-                                    itemBuilder: (context, index) {
-                                      return widget.itemBuilder(
-                                          context, items[index], index, false);
-                                    }),
-                                header: WaterDropMaterialHeader(),
-                                footer: ClassicFooter(),
-                              ),
-                            )
-                        ],
-                      );
-                  }
-                }),
-          )
-        else
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.itemCount,
-              padding: widget.padding,
-              itemBuilder: (ctx, index) {
-                Widget listItem = widget.itemBuilder(
-                    ctx, null, index, selectedItems.contains(index));
-                if (widget.multiSelectEnabled) {
-                  listItem = GestureDetector(
-                    onTap: () {
-                      if (this.selectedItems.contains(index)) {
-                        this.selectedItems.remove(index);
+      children: [
+        StreamBuilder<ApiCallStates>(
+          stream: listBloc.apiSubject,
+          builder: (context, snapshot) {
 
-                        /// Once a max selection count is non null, that mean the completion is false
-                        widget.onMaxMultiSelectionCompleted(
-                            widget.maxSelectionCount == null);
+            if (snapshot.hasError) {
+              return Container(child: Text("Error Loading Items"),);
+            }
 
-                        if (widget.minSelectionCount > this.selectedItems.length) {
-                          widget.onMinMultiSelectionCompleted(false);
-                        }
+            if (snapshot.data == ApiCallStates.IDLE || snapshot.data == ApiCallStates.LOADING) {
+              return Expanded(child: Center(child: CircularProgressIndicator()));
+            }
 
-                      } else { //
+            if (snapshot.data == ApiCallStates.SUCCESS) {
+              return Expanded(
+                child: ListView.separated(
+                  itemCount: widget.itemCounter != null ? widget.itemCounter(listBloc.responseModel) : widget.itemCount,
+                  padding: widget.padding,
+                  separatorBuilder: (context, index) {
+                    return widget.separator != null ? widget.separator : Container();
+                  },
+                  itemBuilder: (ctx, index) {
 
-                        if (widget.maxSelectionCount == null) {
-                          this.selectedItems.add(index);
-                        } else {
-                          if (widget.maxSelectionCount > this.selectedItems.length) {
-                            this.selectedItems.add(index);
-                          }
-                        }
+                    /// Get the data being return from the server
+                    Widget listItem = widget.itemBuilder(ctx, listBloc.responseModel, index, selectedItems.contains(index));
 
-                        /// Check for the minimum selection
-                        if (widget.minSelectionCount > 0) {
-                          if (widget.minSelectionCount <=
-                              this.selectedItems.length) {
-                            widget.onMinMultiSelectionCompleted(true);
-                          } else {
-                            widget.onMinMultiSelectionCompleted(false);
-                          }
-                        }
-
-                        /// Checks for the max selection count and fires a completed true if selection count has been met
-                        if (widget.maxSelectionCount != null) {
-                          if (widget.maxSelectionCount >
-                              this.selectedItems.length) {
-                            // this.selectedItems.add(index);
+                    if (widget.multiSelectEnabled) {
+                      listItem = GestureDetector(
+                        onTap: () {
+                          if (this.selectedItems.contains(index)) {
+                            this.selectedItems.remove(index);
+                            /// Once a max selection count is non null, that mean the completion is false
                             widget.onMaxMultiSelectionCompleted(
-                                widget.maxSelectionCount ==
-                                    this.selectedItems.length);
-                          } else {
-                            widget.onMaxMultiSelectionCompleted(
-                                true); // completed is true
+                                widget.maxSelectionCount == null);
+
+                            if (widget.minSelectionCount > this.selectedItems.length) {
+                              widget.onMinMultiSelectionCompleted(false);
+                            }
+
+                          } else { //
+
+                            if (widget.maxSelectionCount == null) {
+                              this.selectedItems.add(index);
+                            } else {
+                              if (widget.maxSelectionCount > this.selectedItems.length) {
+                                this.selectedItems.add(index);
+                              }
+                            }
+
+                            /// Check for the minimum selection
+                            if (widget.minSelectionCount > 0) {
+                              if (widget.minSelectionCount <=
+                                  this.selectedItems.length) {
+                                widget.onMinMultiSelectionCompleted(true);
+                              } else {
+                                widget.onMinMultiSelectionCompleted(false);
+                              }
+                            }
+
+                            /// Checks for the max selection count and fires a completed true if selection count has been met
+                            if (widget.maxSelectionCount != null) {
+                              if (widget.maxSelectionCount >
+                                  this.selectedItems.length) {
+                                // this.selectedItems.add(index);
+                                widget.onMaxMultiSelectionCompleted(
+                                    widget.maxSelectionCount ==
+                                        this.selectedItems.length);
+                              } else {
+                                widget.onMaxMultiSelectionCompleted(
+                                    true); // completed is true
+                              }
+                            } else {
+                              // this.selectedItems.add(index);
+                              widget.onMaxMultiSelectionCompleted(true);
+                            }
                           }
-                        } else {
-                          // this.selectedItems.add(index);
-                          widget.onMaxMultiSelectionCompleted(true);
-                        }
-                      }
-                      // print("Activate Multiple Selection..>\n ${this.selectedItems}");
-                      setState(() {});
-                    },
-                    child: listItem,
-                  );
-                }
-                return listItem;
-              },
-            ),
-          ),
-        ValueListenableBuilder(
-            valueListenable: moreLoadingNotifier,
-            builder: (context, bool value, child) {
-              if (value) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      CircularProgressIndicator(),
-                      SizedBox(width: 10),
-                      Text("Load more")
-                    ],
-                  ),
-                );
-              } else {
-                return SizedBox();
-              }
-            })
+                          // print("Activate Multiple Selection..>\n ${this.selectedItems}");
+                          setState(() {});
+                        },
+                        child: listItem,
+                      );
+                    }
+                    return listItem;
+                  },
+                ),
+              );
+            }
+
+            return Container();
+
+          }
+        ),
       ],
     );
   }
 
-  void setItems(PaginatedDataModel model) {
+  Widget listView() {
+
+  }
+
+}
+
+class ListBloc<T extends CBBaseListViewModel> {
+
+  BehaviorSubject<ApiCallStates> apiSubject = BehaviorSubject.seeded(ApiCallStates.IDLE);
+
+  String url = "";
+  // List<T> items = [];
+  T responseModel;
+//  T data;
+
+  void close() {
+    apiSubject.close();
+  }
+
+  fetch() async {
+    apiSubject.add(ApiCallStates.LOADING);
     try {
-      items.addAll(model.data);
-    } catch (err) {}
-  }
 
-  void _handleBlocState(BlocModel model) {
-    switch (model.state) {
-      case BlocState.loading:
-        break;
-      case BlocState.dataLoaded:
-        items = model.data.data;
-        break;
-      case BlocState.error:
-        break;
-      case BlocState.loadingMoreData:
+      var response = await NetworkUtil().connectApi(url, RequestMethod.get);
+      responseModel.fromJson(response.data);
 
-        break;
-      case BlocState.moreDataLoaded:
-        items.addAll(model.data.data);
-        _controller.loadComplete();
-        break;
-      case BlocState.dataRefreshed:
-        items = model.data.data;
-        _controller.refreshCompleted();
-        break;
-      case BlocState.searchDataReturned:
-        showSearchLoading = false;
-        items = model.data.data;
-        break;
-      case BlocState.searchingData:
-        showSearchLoading = true;
-        items = model.data.data;
-        break;
+      apiSubject.add(ApiCallStates.SUCCESS);
+
+    } catch (e) {
+      apiSubject.addError(e);
     }
   }
 
 
-  int getItemCount(CBBaseModel model) {
-    if (model.data is List) {
-      return model.data.total;
-    }
-//    if (data is Map)
-    return 0;
-  }
 
-  @override
-  void dispose() {
-    if (widget.urlModel != null) {
-      baseBloc.dispose();
-    }
-    super.dispose();
-  }
 }

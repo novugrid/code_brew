@@ -1,10 +1,12 @@
 import 'package:code_brew/src/ui/UICodeBrew.dart';
 import 'package:code_brew/src/ui/theme/CodeBrewTheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class UITextFormField extends StatefulWidget {
   final String hint;
   final String label;
+  final double labelSpacing;
   final UIAlignment labelAlignment;
   final Border border;
   final EdgeInsetsGeometry padding;
@@ -14,12 +16,15 @@ class UITextFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
-  final maxLines;
+  final int maxLines;
+  final bool enabled;
+  final List<TextInputFormatter> inputFormatters;
 
   UITextFormField({
     this.controller,
     this.hint = "",
     this.label,
+    this.labelSpacing = 5.0,
     this.labelAlignment = UIAlignment.top,
     this.border,
     this.padding,
@@ -29,6 +34,8 @@ class UITextFormField extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.maxLines = 1,
+    this.enabled = true,
+    this.inputFormatters,
   });
 
   @override
@@ -62,6 +69,9 @@ class _UITextFormField extends State<UITextFormField> {
       keyboardType: widget.keyboardType,
       validator: widget.validator,
       onChanged: widget.onChanged,
+      enabled: widget.enabled,
+      inputFormatters: widget.inputFormatters ?? [],
+      textInputAction: TextInputAction.done,
     );
 
     Widget container;
@@ -72,7 +82,7 @@ class _UITextFormField extends State<UITextFormField> {
       }
 
       Widget label = Container(
-        margin: EdgeInsets.only(bottom: 5),
+        margin: EdgeInsets.only(bottom: widget.labelSpacing),
         child: Text(
           widget.label,
           style: labelStyle,
