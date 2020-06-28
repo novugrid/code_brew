@@ -36,7 +36,7 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
           widget.onCompleted(bloc.loginResponse);
         }
       }, onError: (e) {
-        if (e is ApiError) {
+        if (e is CBApiError) {
           UIDialog(
             context: context,
             type: DialogType.error,
@@ -80,6 +80,9 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
             hint: "Enter password",
             passwordController: passwordController,
             validator: FieldValidator.password(),
+            onEditingComplete: () {
+              submit();
+            },
           ),
 
           UIButton(
@@ -91,9 +94,7 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
 //            fillContainer: true,
             padding: EdgeInsets.zero,
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           // Todo: Replace with the right model
           StreamBuilder<ApiCallStates>(
               stream: bloc.loginSubject,

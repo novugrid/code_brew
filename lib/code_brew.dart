@@ -1,6 +1,7 @@
 library code_brew;
 
 export 'package:code_brew/src/ui/dialog/UIDialog.dart';
+export 'package:code_brew/src/ui/dialog/sizes/BigDialog.dart';
 export 'package:code_brew/src/ui/dialog/dialog_buttons/DialogPositiveButton.dart';
 export 'package:code_brew/src/ui/dialog/dialog_enum.dart';
 
@@ -10,7 +11,7 @@ export 'src/helpers/extension.dart';
 export 'src/models/CBBaseModel.dart';
 export 'src/models/PaginatedDataModel.dart';
 export 'src/models/UrlModel.dart';
-export 'src/network/ApiError.dart';
+//export 'src/network/ApiError.dart';
 export 'src/network/NetworkUtil.dart';
 export 'src/ui/CBDataTable.dart';
 export 'src/ui/UiKits.dart';
