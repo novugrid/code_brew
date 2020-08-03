@@ -112,7 +112,8 @@ class _UIPaginatedDataTableState extends State<UIPaginatedDataTable> {
                 case ConnectionState.active:
                 case ConnectionState.done:
                   model = snapshot.data.data;
-                  _uiTableDataSource ??= _UITableDataSource(context, data: model, rowItemBuilder: widget.rowItemBuilder, totalRows: widget.totalRows);
+                  _uiTableDataSource ??= _UITableDataSource(context, rowItemBuilder: widget.rowItemBuilder, totalRows: widget.totalRows);
+                  _uiTableDataSource.data = model;
                   return Scrollbar(
                     child: ListView(
                       children: [
@@ -137,9 +138,10 @@ class _UIPaginatedDataTableState extends State<UIPaginatedDataTable> {
 class _UITableDataSource extends DataTableSource {
 
   final BuildContext context;
-  final dynamic data;
   final DataRow Function(int index, dynamic data) rowItemBuilder;
   final int Function(dynamic data) totalRows;
+  // We need to make the data updatable
+  dynamic data;
 
 
   _UITableDataSource(this.context, {this.data, this.rowItemBuilder, this.totalRows});

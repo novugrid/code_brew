@@ -47,6 +47,11 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
           // e.error.userMessage;
         }
       });
+
+      // prefill
+//      emailController.text = "superadmin@gmail.com";
+//      passwordController.text = "password";
+
     });
   }
 

@@ -208,7 +208,7 @@ class _CBDataTableState extends State<CBDataTable> {
 
   @override
   void dispose() {
-    baseBloc.dispose();
+    // baseBloc.dispose();
     super.dispose();
   }
 }

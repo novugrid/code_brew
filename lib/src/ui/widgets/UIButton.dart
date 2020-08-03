@@ -154,6 +154,15 @@ class UIButton extends MaterialButton {
           padding: this.padding,
         );
         break;
+      default: // this will be a raised UI button
+        button = RaisedButton(
+          elevation: elevation ?? 6,
+          onPressed: onPressed,
+          child: current,
+          color: color,
+          textColor: textColor,
+          padding: this.padding,
+        );
     }
 
     /*button = ButtonTheme(

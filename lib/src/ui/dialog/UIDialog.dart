@@ -91,9 +91,7 @@ class UIDialog {
         return ConfirmationWidget(
           title: title ?? "Delete Stuff",
           message: message ??
-              "Confirm this action before you proceed, Really a cool message to be passed, and you really "
-              "need to check this stuff out cos its a great "
-              "stuff holding stuff together",
+              "Confirm",
           onPositiveBtnClicked: onPositiveBtnClicked,
           onNegativeBtnClicked: () {
             Navigator.of(context).pop();
@@ -103,10 +101,8 @@ class UIDialog {
         return DialogLoadingWidget();
       case DialogType.basic:
         return BasicMessageWidget(
-          message: "Really a cool message to be passed, and you really "
-              "need to check this stuff out cos its a great "
-              "stuff holding stuff together",
-          title: "Hello title",
+          message: message ?? "",
+          title: title ?? "",
           btnText: "OK",
           onPositiveBtnClicked: () {
             Navigator.of(context).pop();
