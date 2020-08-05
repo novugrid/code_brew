@@ -19,6 +19,7 @@ class CBDataTable extends StatefulWidget {
   UrlModel urlModel;
   List<DataColumn> headers;
   Widget pageHeader;
+  Widget pageSubHeader;
   bool isSearchable, shouldPaginate;
   CBListBloc bloc;
 
@@ -29,6 +30,7 @@ class CBDataTable extends StatefulWidget {
       @required this.rowItemBuilder,
         this.bloc,
         this.pageHeader = const SizedBox(),
+        this.pageSubHeader,
         this.isSearchable = true,
         this.shouldPaginate = true,
       });
@@ -99,7 +101,7 @@ class _CBDataTableState extends State<CBDataTable> {
               )
             ],
           ),
-
+          if (widget.pageSubHeader != null) widget.pageSubHeader,
           Expanded(
             child: StreamBuilder(
               stream: baseBloc.outBlocModel,
