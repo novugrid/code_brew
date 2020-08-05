@@ -14,6 +14,7 @@ class UIPasswordField extends StatefulWidget {
   final Color hintColor;
   final String hint;
   final FormFieldValidator<String> validator;
+  final VoidCallback onEditingComplete;
 
   UIPasswordField({
     this.passwordController,
@@ -26,6 +27,7 @@ class UIPasswordField extends StatefulWidget {
     this.hintColor,
     this.hint = "",
     this.validator,
+    this.onEditingComplete
   });
 
   @override
@@ -101,6 +103,7 @@ class _UIPasswordField extends State<UIPasswordField> {
             return "Password must contain capital letters";
           }),
       onChanged: (val) {},
+      onEditingComplete: widget.onEditingComplete ?? () {},
     );
 
     if (widget.label != null) {

@@ -1,4 +1,5 @@
 import 'package:code_brew/src/ui/dialog/dialog_actions.dart';
+import 'package:code_brew/src/ui/theme/CodeBrewTheme.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -14,13 +15,12 @@ class BasicMessageWidget extends StatelessWidget {
   String btnText;
   OnPositiveBtnClicked onPositiveBtnClicked;
 
-  BasicMessageWidget(
-      {this.message,
-      this.title = "",
-      this.titleStyle = const TextStyle(fontSize: 16),
-      this.messageStyle = const TextStyle(fontSize: 14),
-      this.btnText = "",
-      this.onPositiveBtnClicked});
+  BasicMessageWidget({this.message,
+    this.title = "",
+    this.titleStyle = const TextStyle(fontSize: 16),
+    this.messageStyle = const TextStyle(fontSize: 14),
+    this.btnText = "",
+    this.onPositiveBtnClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,12 @@ class BasicMessageWidget extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                       child: Text(
-                    title,
-                    style: titleStyle,
-                  )),
+                        title,
+                        style: Theme
+                            .of(context)
+                            .dialogTheme
+                            .titleTextStyle,
+                      )),
                 ],
               ),
             ),
@@ -47,24 +50,29 @@ class BasicMessageWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                    child: Text(
-                  message,
-                  style: messageStyle,
-                ))
+                  child: Text(
+                    message,
+                    style: Theme
+                        .of(context)
+                        .dialogTheme
+                        .contentTextStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                )
               ],
             ),
           ),
           if (btnText.isNotEmpty)
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
                   child: Text(
                     btnText,
-                    style: TextStyle(color: Theme.of(context).primaryColor),
+                    style: CodeBrewTheme.dialogButtonTextStyle,
                   ),
                   onPressed: onPositiveBtnClicked ??
-                      () {
+                          () {
                         print("No action attached");
                       },
                   shape: RoundedRectangleBorder(

@@ -16,7 +16,7 @@ class UIDialog {
   DialogType type;
   DialogSize size;
   DialogPosition position;
-  bool dismissable;
+  bool dismissible;
   BuildContext context;
   ValueNotifier<DialogType> typeChangedNotifier;
   OnPositiveBtnClicked onPositiveBtnClicked;
@@ -31,7 +31,7 @@ class UIDialog {
     this.type,
     this.size = DialogSize.normal,
     this.position = DialogPosition.center,
-    this.dismissable = true,
+    this.dismissible = true,
     this.onPositiveBtnClicked,
     this.onNegativeBtnClicked,
     this.title,
@@ -80,7 +80,9 @@ class UIDialog {
                 ],
               );
           }
-        });
+        },
+      barrierDismissible: dismissible,
+    );
   }
 
   Widget mapDialogTypeToWidget(DialogType type) {
@@ -89,9 +91,7 @@ class UIDialog {
         return ConfirmationWidget(
           title: title ?? "Delete Stuff",
           message: message ??
-              "Confirm this action before you proceed, Really a cool message to be passed, and you really "
-              "need to check this stuff out cos its a great "
-              "stuff holding stuff together",
+              "Confirm",
           onPositiveBtnClicked: onPositiveBtnClicked,
           onNegativeBtnClicked: () {
             Navigator.of(context).pop();
@@ -101,10 +101,8 @@ class UIDialog {
         return DialogLoadingWidget();
       case DialogType.basic:
         return BasicMessageWidget(
-          message: "Really a cool message to be passed, and you really "
-              "need to check this stuff out cos its a great "
-              "stuff holding stuff together",
-          title: "Hello title",
+          message: message ?? "",
+          title: title ?? "",
           btnText: "OK",
           onPositiveBtnClicked: () {
             Navigator.of(context).pop();
@@ -121,14 +119,15 @@ class UIDialog {
             onPositiveBtnClicked: onPositiveBtnClicked);
       case DialogType.success:
         return GeneralDialogWidget(
-          title: title ?? "Hello!",
-          message: message ?? "Item deleted auccessfully from the api.",
+          title: title ?? "Success",
+          message: message ?? "Success",
           btnText: "Ok",
           icon: Icon(
             Icons.check_circle_outline,
             size: 50,
             color: Colors.green.shade400,
           ),
+          onPositiveBtnClicked: onPositiveBtnClicked,
         );
       case DialogType.error:
         return GeneralDialogWidget(

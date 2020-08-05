@@ -17,15 +17,14 @@ class GeneralDialogWidget extends StatelessWidget {
   TextStyle messageStyle;
   OnPositiveBtnClicked onPositiveBtnClicked;
 
-  GeneralDialogWidget(
-      {this.title,
-      this.message,
-      this.btnText,
-      this.icon,
-      this.titleStyle =
-          const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-      this.messageStyle,
-      this.onPositiveBtnClicked});
+  GeneralDialogWidget({this.title,
+    this.message,
+    this.btnText,
+    this.icon,
+    this.titleStyle =
+    const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+    this.messageStyle,
+    this.onPositiveBtnClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,10 @@ class GeneralDialogWidget extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: Theme.of(context).dialogTheme.titleTextStyle,
+                      style: Theme
+                          .of(context)
+                          .dialogTheme
+                          .titleTextStyle,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -55,13 +57,15 @@ class GeneralDialogWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                    child: Text(
-                  message,
-                  style: Theme.of(context)
-                      .dialogTheme
-                      .contentTextStyle, //  messageStyle,
-                  textAlign: TextAlign.center,
-                ))
+                  child: Text(
+                    message,
+                    style: Theme
+                        .of(context)
+                        .dialogTheme
+                        .contentTextStyle, //  messageStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                )
               ],
             ),
           ),
@@ -76,7 +80,7 @@ class GeneralDialogWidget extends StatelessWidget {
                         .dialogButtonTextStyle, // TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onPressed: onPositiveBtnClicked ??
-                      () {
+                          () {
                         Navigator.of(context).pop();
                       },
                   shape: RoundedRectangleBorder(

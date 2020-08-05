@@ -1,6 +1,7 @@
 library code_brew;
 
 export 'package:code_brew/src/ui/dialog/UIDialog.dart';
+export 'package:code_brew/src/ui/dialog/sizes/BigDialog.dart';
 export 'package:code_brew/src/ui/dialog/dialog_buttons/DialogPositiveButton.dart';
 export 'package:code_brew/src/ui/dialog/dialog_enum.dart';
 
@@ -20,10 +21,13 @@ export 'src/ui/search_widgets/UISearchBar.dart';
 export 'src/ui/theme/CodeBrewTheme.dart';
 export 'src/network/CodeBrewNetworker.dart';
 export 'src/CodeBrewMain.dart';
-export 'src/ui/widgets/UIListView.dart';
 export 'widgets.dart';
 export 'src/bloc/cb_list_bloc.dart';
 export 'src/models/BlocModel.dart';
+
+// Services
+export 'src/helpers/CBNumberHelper.dart';
+export 'src/uiservices/NumberOnlyTextInputFormatter.dart';
 
 /// A Calculator.
 class Calculator {
