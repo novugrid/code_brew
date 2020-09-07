@@ -35,7 +35,7 @@ class CBEmailLoginBloc {
       );
       loginResponse = response.data;
       loginSubject.add(ApiCallStates.SUCCESS);
-    } on ApiError catch (apiError) {
+    } on CBApiError catch (apiError) {
       loginSubject.addError(apiError);
       loginSubject.add(ApiCallStates.ERROR);
     }

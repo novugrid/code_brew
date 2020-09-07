@@ -1,7 +1,7 @@
 import 'package:code_brew/src/network/models/ApiErrorModel.dart';
 import 'package:dio/dio.dart';
 
-typedef ApiErrorCallback = Function(ApiError);
+typedef ApiErrorCallback = Function(CBApiError);
 
 class ApiErrorCodes {
   static const int EXCEPTION = -5;
@@ -32,15 +32,15 @@ class ApiErrorCodes {
   static const int SESSION_TIMEOUT = -100;
 }
 
-class ApiError {
+class CBApiError {
 
   int errorType = 0;
   String errorDescription;
   ApiErrorModel apiErrorModel;
 
-  ApiError({this.errorDescription});
+  CBApiError({this.errorDescription});
 
-  ApiError.fromDio(Object dioError) {
+  CBApiError.fromDio(Object dioError) {
     apiErrorModel = ApiErrorModel();
     _handleError(dioError);
   }

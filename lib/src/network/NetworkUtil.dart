@@ -55,7 +55,7 @@ class NetworkUtil {
       print(e);
       print(stackTace);
       
-      return Future.error(ApiError.fromDio(e));
+      return Future.error(CBApiError.fromDio(e));
     }
 
     

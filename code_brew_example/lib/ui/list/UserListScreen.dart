@@ -19,14 +19,14 @@ class UserListScreen extends StatelessWidget {
       appBar: FlatAppbar(
         title: "Searchable List",
       ),
-      body: UIListView<UserModel>(
+      body: Container(), /*UIListView<UserModel>(
         model: UserModel(),
         itemBuilder: (BuildContext contxt, data, index, isSelected) {
           return _buildItem(data);
         },
         urlModel: getUrl(),
         searchable: true,
-      ),
+      ),*/
     );
   }
 

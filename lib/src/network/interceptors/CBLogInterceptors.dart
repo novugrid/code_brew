@@ -21,10 +21,12 @@ class LoggingInterceptor extends Interceptor{
 
   @override
   Future onResponse(Response response) {
-    print(
-        "<--- ${response.statusCode} ${response.request.method} ${response.request.path}");
-    String responseAsString = response.data.toString();
-    if (responseAsString.length > _maxCharactersPerLine) {
+    print("<--- ${response.statusCode} ${response.request.method} ${response.request.path}");
+    // String responseAsString = response.data.toString();
+
+    print(json.encode(response.data));
+
+    /*if (responseAsString.length > _maxCharactersPerLine) {
       int iterations =
       (responseAsString.length / _maxCharactersPerLine).floor();
       for (int i = 0; i <= iterations; i++) {
@@ -37,7 +39,7 @@ class LoggingInterceptor extends Interceptor{
       }
     } else {
       print(response.data);
-    }
+    }*/
     print("<--- END INCOMING HTTP");
 
     return super.onResponse(response);
