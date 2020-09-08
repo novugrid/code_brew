@@ -15,7 +15,7 @@ class ApiErrorModel {
 
   factory ApiErrorModel.fromJson(Map<String, dynamic> json) => ApiErrorModel(
     code: json["code"],
-    error: Error.fromJson(json["error"]),
+    error: json["error"] != null ? Error.fromJson(json["error"]) : null,
     message: json["message"],
     success: json["success"],
   );

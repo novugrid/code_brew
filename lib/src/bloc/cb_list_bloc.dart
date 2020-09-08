@@ -53,6 +53,10 @@ class CBListBloc {
     }
   }
 
+  void updateModel(UrlModel model) {
+    this.urlModel = model;
+  }
+
   void search(String searchTerm) async {
     currentState = BlocState.searchingData;
     inBlocModel

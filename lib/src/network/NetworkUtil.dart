@@ -49,16 +49,9 @@ class NetworkUtil {
           break;
       }
       return response;
-      
     } on DioError catch (e, stackTace) {
-      print("see error here");
-      print(e);
-      print(stackTace);
-      
       return Future.error(ApiError.fromDio(e));
     }
-
-    
   }
 }
 

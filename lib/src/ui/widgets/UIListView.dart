@@ -30,6 +30,7 @@ class UIListView<T> extends StatefulWidget {
   final ValueChanged<bool> onMinMultiSelectionCompleted;
   final ValueChanged<bool> onMultiSelection;
   RefreshController refreshController;
+  CBListBloc bloc;
 
   UIListView({
     @required this.itemBuilder,
@@ -45,6 +46,7 @@ class UIListView<T> extends StatefulWidget {
     this.onMaxMultiSelectionCompleted,
     this.onMinMultiSelectionCompleted,
     this.onMultiSelection,
+    this.bloc,
   })  : assert(itemCount != null),
         assert(
             multiSelectEnabled ? onMaxMultiSelectionCompleted != null : true);
@@ -73,10 +75,11 @@ class _UIListViewState<T> extends State<UIListView> {
   void initState() {
     if (widget.urlModel != null) {
       _controller = widget.refreshController ?? RefreshController();
-      baseBloc = CBListBloc(widget.model, widget.urlModel);
+      baseBloc = widget.bloc ?? CBListBloc(widget.model, widget.urlModel);
       baseBloc.add(BlocEvent.fetch);
       searchController.addListener(onSearch);
     }
+    _controller = widget.refreshController ?? RefreshController();
 
     super.initState();
   }

@@ -129,6 +129,7 @@ class UIDialog {
             size: 50,
             color: Colors.green.shade400,
           ),
+          onPositiveBtnClicked: onPositiveBtnClicked,
         );
       case DialogType.error:
         return GeneralDialogWidget(

@@ -14,7 +14,9 @@ mixin UiKits {
   static const String AHeavy = "AHeavy";
   static const String ABlack = "ABlack";
 
-  Widget Height(double h) {
+  ValueNotifier<bool> preogressNotifier = ValueNotifier(false);
+
+  Widget Height(double h) { 
     return new SizedBox(height: h);
   }
 

@@ -59,23 +59,24 @@ class ApiError {
           break;
         case DioErrorType.DEFAULT:
           errorDescription =
-              "Connection to API server failed due to internet connection";
+          "Connection to API server failed due to internet connection";
           break;
         case DioErrorType.RECEIVE_TIMEOUT:
           errorDescription = "Receive timeout in connection with API server";
           break;
         case DioErrorType.RESPONSE:
-          // errorDescription = "Received invalid status code: ${dioError.response.statusCode}";
+        // errorDescription = "Received invalid status code: ${dioError.response.statusCode}";
           if (dioError.response.statusCode == 401) {
             this.errorType = ApiErrorCodes.SESSION_TIMEOUT;
             this.errorDescription =
-                "Your session has timed out, please login again to proceed";
+            "Your session has timed out, please login again to proceed";
           } else if (dioError.response.statusCode == 400) {
             this.apiErrorModel = ApiErrorModel.fromJson(dioError.response.data);
-            this.errorDescription = this.apiErrorModel.error.userMessage;
+            this.errorDescription =
+                this.apiErrorModel.error?.userMessage ?? apiErrorModel.message;
           } else {
             this.errorDescription =
-                "Oops! we could'nt make connections, please try again";
+            "Oops! we could'nt make connections, please try again";
           }
           break;
         case DioErrorType.SEND_TIMEOUT:
@@ -87,4 +88,6 @@ class ApiError {
     }
     // return errorDescription;
   }
+
+  String toString() => "$errorDescription";
 }
