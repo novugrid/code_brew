@@ -93,13 +93,13 @@ class _UIPasswordField extends State<UIPasswordField> {
           shouldContainCapitalLetter: true,
           shouldContainSpecialChars: true,
           errorMessage: "Password must match the required format",
-          isNumberNotPresent: () {
+          onNumberNotPresent: () {
             return "Password must contain number";
           },
-          isSpecialCharsNotPresent: () {
+          onSpecialCharsNotPresent: () {
             return "Password must contain special characters";
           },
-          isCapitalLetterNotPresent: () {
+          onCapitalLetterNotPresent: () {
             return "Password must contain capital letters";
           }),
       onChanged: (val) {},
