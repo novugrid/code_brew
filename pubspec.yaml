@@ -14,9 +14,11 @@ dependencies:
   rxdart: ^0.24.0
   shared_preferences: ^0.5.6+3
   intl: ^0.16.1
-  the_validator:
-    git:
-      url: git://github.com/culjo/the_validator.git
+  the_validator: 1.0.5
+
+      #  the_validator:
+#    git:
+#      url: git://github.com/culjo/the_validator.git
       # path: ../the_validator
   country_code_picker: ^1.2.4
   image_picker: ^0.6.3+1

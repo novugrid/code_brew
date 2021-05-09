@@ -66,6 +66,7 @@ class _CBDataTableState extends State<CBDataTable> {
   Widget build(BuildContext context) {
 
     return LayoutBuilder(builder: (context, constraints) {
+
       return Column(
         children: <Widget>[
 
@@ -131,6 +132,7 @@ class _CBDataTableState extends State<CBDataTable> {
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(minWidth: constraints.minWidth),
                                       child: DataTable(
+
                                         showCheckboxColumn: false,
                                         columns: widget.headers,
                                         rows: _buildDataRow(model),
