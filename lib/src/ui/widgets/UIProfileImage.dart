@@ -18,7 +18,6 @@ class _UIProfileImageState extends State<UIProfileImage> {
   @override
   void initState() {
     super.initState();
-
   }
 
   void pickImage() async {
@@ -34,16 +33,22 @@ class _UIProfileImageState extends State<UIProfileImage> {
     if (uiImageChooser != null) {
       switch (uiImageChooser) {
         case UIImageChooser.GALLERY:
-            imageFileNotifier.value = await ImagePicker.pickImage(source: ImageSource.gallery);
+          var pickedFile = await ImagePicker().getImage(
+              source: ImageSource.gallery);
+          if (pickedFile != null) {
+            imageFileNotifier.value = File(pickedFile.path);
+          }
           break;
         case UIImageChooser.CAMERA:
-            imageFileNotifier.value = await ImagePicker.pickImage(source: ImageSource.camera);
+          var pickedFile = await ImagePicker().getImage(
+              source: ImageSource.camera);
+          if (pickedFile != null) {
+            imageFileNotifier.value = File(pickedFile.path);
+          }
           break;
       }
-      setState(() {
-      });
+      setState(() {});
     }
-
   }
 
   @override
@@ -54,15 +59,15 @@ class _UIProfileImageState extends State<UIProfileImage> {
           this.pickImage();
         },
         child: Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(color: Colors.grey),
-          child: ValueListenableBuilder(valueListenable: imageFileNotifier, builder: (BuildContext context, File value, Widget child) {
-
-            return value != null ? Image.file(value) : Container();
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(color: Colors.grey),
+            child: ValueListenableBuilder(valueListenable: imageFileNotifier,
+                builder: (BuildContext context, File value, Widget child) {
+                  return value != null ? Image.file(value) : Container();
 //            return Container();
 
-          })
+                })
 
 
         ),
@@ -81,15 +86,18 @@ class ImageSourceChooser extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
       child: Column(
         children: <Widget>[
-          item(context, UIImageChooser.GALLERY, "Select From Gallery", icon: Icons.image),
+          item(context, UIImageChooser.GALLERY, "Select From Gallery",
+              icon: Icons.image),
           SizedBox(height: 9,),
-          item(context, UIImageChooser.CAMERA, "Select From Camera", icon: Icons.camera_alt),
+          item(context, UIImageChooser.CAMERA, "Select From Camera",
+              icon: Icons.camera_alt),
         ],
       ),
     );
   }
 
-  Widget item(BuildContext context, UIImageChooser sourceChooser, String title, {IconData icon}) {
+  Widget item(BuildContext context, UIImageChooser sourceChooser, String title,
+      {IconData icon}) {
     return InkWell(
       onTap: () {
         Navigator.of(context, rootNavigator: true).pop(sourceChooser);
@@ -97,24 +105,35 @@ class ImageSourceChooser extends StatelessWidget {
       child: Container(
         height: 80,
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
-            border: Border.all(color: Theme.of(context).primaryColor)),
+            color: Theme
+                .of(context)
+                .primaryColor
+                .withOpacity(0.1),
+            border: Border.all(color: Theme
+                .of(context)
+                .primaryColor)),
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15.0),
         child: Row(
           children: <Widget>[
             icon != null
                 ? Container(
               margin: EdgeInsets.only(right: 20.0),
-                  child: Icon(
-                      icon,
-                      size: 32,
-                    color: Theme.of(context).accentColor,
-                    ),
-                )
+              child: Icon(
+                icon,
+                size: 32,
+                color: Theme
+                    .of(context)
+                    .accentColor,
+              ),
+            )
                 : Container(),
             Text(
               title,
-              style: Theme.of(context).textTheme.body1.copyWith(fontWeight: FontWeight.bold),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .body1
+                  .copyWith(fontWeight: FontWeight.bold),
             )
           ],
         ),
