@@ -3,9 +3,6 @@ import 'package:code_brew/src/bloc/cb_list_bloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/UrlModel.dart';
 import 'package:flutter/material.dart';
-
-import 'list/smart_refresher/smart_refresher.dart';
-
 ///
 /// project: code_brew
 /// @package:
@@ -43,7 +40,6 @@ class _CBDataTableState extends State<CBDataTable> {
   var _searchController = TextEditingController();
   String currentSearch = "";
   List items = [];
-  RefreshController _controller = RefreshController();
   PaginatedDataModel model;
 
   @override

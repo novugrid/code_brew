@@ -2,11 +2,9 @@ import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/bloc/cb_list_bloc.dart';
 import 'package:code_brew/src/models/BlocModel.dart';
 import 'package:code_brew/src/models/CBBaseModel.dart';
-import 'package:code_brew/src/ui/list/smart_refresher/indicator/classic_indicator.dart';
-import 'package:code_brew/src/ui/list/smart_refresher/indicator/material_indicator.dart';
-import 'package:code_brew/src/ui/list/smart_refresher/smart_refresher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../bloc/cb_list_bloc.dart';
 
