@@ -16,7 +16,7 @@ class LoggingInterceptor extends Interceptor{
     print("Body Params: ${json.encode(options.data)}");
 
     print("--> OUT HTTP");
-    return super.onRequest(options, handler);
+    return handler.next(options);
   }
 
   @override
@@ -39,7 +39,7 @@ class LoggingInterceptor extends Interceptor{
       print(response.data);
     }
     print("<--- END INCOMING HTTP");
-    super.onResponse(response, handler);
+    return handler.next(response);
   }
 
   @override
@@ -51,6 +51,6 @@ class LoggingInterceptor extends Interceptor{
       print(err.response.data);
     }
     print("<------ END ERROR -------->");
-    super.onError(err, handler);
+    return handler.next(err);
   }
 }
