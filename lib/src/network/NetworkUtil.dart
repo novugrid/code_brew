@@ -11,7 +11,10 @@ enum ApiCallStates {
   ERROR
 }
 
+
 class NetworkUtil {
+  
+  
   Dio _getDioInstance() {
     var dio = Dio(BaseOptions(
       connectTimeout: 30000,
