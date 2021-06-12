@@ -11,7 +11,10 @@ enum ApiCallStates {
   ERROR
 }
 
+
 class NetworkUtil {
+  
+  
   Dio _getDioInstance() {
     var dio = Dio(BaseOptions(
       connectTimeout: 30000,
@@ -43,6 +46,11 @@ class NetworkUtil {
           response = await _getDioInstance()
               .put(finalUrl, data: data, queryParameters: queryParams);
           break;
+        case RequestMethod.patch:
+          response = await _getDioInstance()
+              .patch(finalUrl, data: data, queryParameters: queryParams);
+          break;
+
         case RequestMethod.delete:
           response =
           await _getDioInstance().delete(finalUrl, queryParameters: queryParams);
@@ -62,4 +70,4 @@ class NetworkUtil {
   }
 }
 
-enum RequestMethod { get, post, put, delete }
+enum RequestMethod { get, post, put, delete, patch }

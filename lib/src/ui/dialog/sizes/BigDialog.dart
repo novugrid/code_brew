@@ -154,6 +154,15 @@ class BigDialog extends StatelessWidget {
           break;
         // case TargetPlatform.macOS:
         //  break;
+        case TargetPlatform.linux:
+          // TODO: Handle this case.
+          break;
+        case TargetPlatform.macOS:
+          // TODO: Handle this case.
+          break;
+        case TargetPlatform.windows:
+          // TODO: Handle this case.
+          break;
       }
     }
 
