@@ -33,7 +33,6 @@ class ApiErrorCodes {
 }
 
 class CBApiError {
-
   int errorType = 0;
   String errorDescription;
   ApiErrorModel apiErrorModel;
@@ -51,34 +50,31 @@ class CBApiError {
     if (error is DioError) {
       DioError dioError = error; // as DioError;
       switch (dioError.type) {
-        case DioErrorType.CANCEL:
+        case DioErrorType.cancel:
           errorDescription = "Request to API server was cancelled";
           break;
-        case DioErrorType.CONNECT_TIMEOUT:
+        case DioErrorType.connectTimeout:
           errorDescription = "Connection timeout with API server";
           break;
-        case DioErrorType.DEFAULT:
-          errorDescription =
-              "Connection to API server failed due to internet connection";
+        case DioErrorType.other:
+          errorDescription = "Connection to API server failed due to internet connection";
           break;
-        case DioErrorType.RECEIVE_TIMEOUT:
+        case DioErrorType.receiveTimeout:
           errorDescription = "Receive timeout in connection with API server";
           break;
-        case DioErrorType.RESPONSE:
+        case DioErrorType.response:
           // errorDescription = "Received invalid status code: ${dioError.response.statusCode}";
           if (dioError.response.statusCode == 401) {
             this.errorType = ApiErrorCodes.SESSION_TIMEOUT;
-            this.errorDescription =
-                "Your session has timed out, please login again to proceed";
+            this.errorDescription = "Your session has timed out, please login again to proceed";
           } else if (dioError.response.statusCode == 400) {
             this.apiErrorModel = ApiErrorModel.fromJson(dioError.response.data);
             this.errorDescription = this.apiErrorModel.error.userMessage;
           } else {
-            this.errorDescription =
-                "Oops! we could'nt make connections, please try again";
+            this.errorDescription = "Oops! we could'nt make connections, please try again";
           }
           break;
-        case DioErrorType.SEND_TIMEOUT:
+        case DioErrorType.sendTimeout:
           errorDescription = "Send timeout in connection with API server";
           break;
       }

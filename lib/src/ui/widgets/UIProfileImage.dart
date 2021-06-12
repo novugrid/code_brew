@@ -14,17 +14,17 @@ class UIProfileImage extends StatefulWidget {
 class _UIProfileImageState extends State<UIProfileImage> {
   // File imageFile;
   ValueNotifier<File> imageFileNotifier = ValueNotifier(null);
-
+  final picker = ImagePicker();
   @override
   void initState() {
     super.initState();
-
   }
 
   void pickImage() async {
     /*Scaffold.of(context).showBottomSheet((context) {
       return ImageSourceChooser();
     });*/
+    PickedFile pickedFile;
     UIImageChooser uiImageChooser = await showModalBottomSheet(
         context: context,
         builder: (con) {
@@ -34,16 +34,17 @@ class _UIProfileImageState extends State<UIProfileImage> {
     if (uiImageChooser != null) {
       switch (uiImageChooser) {
         case UIImageChooser.GALLERY:
-            imageFileNotifier.value = await ImagePicker.pickImage(source: ImageSource.gallery);
+          pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+          imageFileNotifier.value = File(pickedFile.path);
           break;
         case UIImageChooser.CAMERA:
-            imageFileNotifier.value = await ImagePicker.pickImage(source: ImageSource.camera);
+          pickedFile = await picker.getImage(source: ImageSource.camera);
+          imageFileNotifier.value = File(pickedFile.path);
           break;
       }
-      setState(() {
-      });
+      setState(() {});
     }
-
   }
 
   @override
@@ -54,18 +55,15 @@ class _UIProfileImageState extends State<UIProfileImage> {
           this.pickImage();
         },
         child: Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(color: Colors.grey),
-          child: ValueListenableBuilder(valueListenable: imageFileNotifier, builder: (BuildContext context, File value, Widget child) {
-
-            return value != null ? Image.file(value) : Container();
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(color: Colors.grey),
+            child: ValueListenableBuilder(
+                valueListenable: imageFileNotifier,
+                builder: (BuildContext context, File value, Widget child) {
+                  return value != null ? Image.file(value) : Container();
 //            return Container();
-
-          })
-
-
-        ),
+                })),
       ),
     );
   }
@@ -82,7 +80,9 @@ class ImageSourceChooser extends StatelessWidget {
       child: Column(
         children: <Widget>[
           item(context, UIImageChooser.GALLERY, "Select From Gallery", icon: Icons.image),
-          SizedBox(height: 9,),
+          SizedBox(
+            height: 9,
+          ),
           item(context, UIImageChooser.CAMERA, "Select From Camera", icon: Icons.camera_alt),
         ],
       ),
@@ -96,21 +96,19 @@ class ImageSourceChooser extends StatelessWidget {
       },
       child: Container(
         height: 80,
-        decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
-            border: Border.all(color: Theme.of(context).primaryColor)),
+        decoration: BoxDecoration(color: Theme.of(context).primaryColor.withOpacity(0.1), border: Border.all(color: Theme.of(context).primaryColor)),
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15.0),
         child: Row(
           children: <Widget>[
             icon != null
                 ? Container(
-              margin: EdgeInsets.only(right: 20.0),
-                  child: Icon(
+                    margin: EdgeInsets.only(right: 20.0),
+                    child: Icon(
                       icon,
                       size: 32,
-                    color: Theme.of(context).accentColor,
+                      color: Theme.of(context).accentColor,
                     ),
-                )
+                  )
                 : Container(),
             Text(
               title,
