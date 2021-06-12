@@ -1,14 +1,13 @@
-
-
 import 'package:code_brew/src/ui/list/smart_refresher/internals/slivers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/foundation.dart';
-import 'internals/indicator_wrap.dart';
-import 'internals/refresh_physics.dart';
+
 import 'indicator/classic_indicator.dart';
 import 'indicator/material_indicator.dart';
+import 'internals/indicator_wrap.dart';
+import 'internals/refresh_physics.dart';
 
 // ignore_for_file: INVALID_USE_OF_PROTECTED_MEMBER
 // ignore_for_file: INVALID_USE_OF_VISIBLE_FOR_TESTING_MEMBER
@@ -265,11 +264,11 @@ class SmartRefresher extends StatefulWidget {
         super(key: key);
 
   static SmartRefresher of(BuildContext context) {
-    return context?.ancestorWidgetOfExactType(SmartRefresher);
+    return context?.findAncestorWidgetOfExactType<SmartRefresher>();
   }
 
   static SmartRefresherState ofState(BuildContext context) {
-    return context?.ancestorStateOfType(TypeMatcher<SmartRefresherState>());
+    return context?.findAncestorStateOfType<SmartRefresherState>();
   }
 
   @override
@@ -963,7 +962,7 @@ class RefreshConfiguration extends InheritedWidget {
             RefreshConfiguration.of(context).shouldFooterFollowWhenNotFull;
 
   static RefreshConfiguration of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(RefreshConfiguration);
+    return context.dependOnInheritedWidgetOfExactType<RefreshConfiguration>();
   }
 
   @override

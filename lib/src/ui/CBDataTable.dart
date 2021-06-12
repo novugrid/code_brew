@@ -54,10 +54,11 @@ class _CBDataTableState extends State<CBDataTable> {
     baseBloc = widget.bloc ?? CBListBloc(widget.model, widget.urlModel);
     baseBloc.add(BlocEvent.fetch);
     _searchController.addListener((){
-      if(_searchController.text != currentSearch) {
+      // TODO: (feranmi) this is highly unoptimized and causes issues
+      /*if(_searchController.text != currentSearch) {
         currentSearch = _searchController.text;
         baseBloc.search(currentSearch);
-      }
+      }*/
     });
     super.initState();
   }
@@ -66,6 +67,7 @@ class _CBDataTableState extends State<CBDataTable> {
   Widget build(BuildContext context) {
 
     return LayoutBuilder(builder: (context, constraints) {
+
       return Column(
         children: <Widget>[
 
@@ -80,6 +82,13 @@ class _CBDataTableState extends State<CBDataTable> {
                 width: 300,
                 child: TextFormField(
                   controller: _searchController,
+                  onFieldSubmitted: (value){
+                    if (_searchController.text != currentSearch) {
+                      currentSearch = _searchController.text;
+                      baseBloc.search(currentSearch);
+                    }
+                  },
+
                   decoration: InputDecoration(
                     hintText: "Search",
                     focusedBorder:  OutlineInputBorder(
@@ -93,7 +102,11 @@ class _CBDataTableState extends State<CBDataTable> {
                     OutlineInputBorder(
                         borderSide: BorderSide(
                             color: Color(0xffB7B7B7), width: 1)),
-                    suffixIcon: Icon(Icons.search),
+                    suffixIcon: IconButton(onPressed: (){
+                      _searchController.clear();
+                      currentSearch = _searchController.text;
+                      baseBloc.search(currentSearch);
+                    }, icon: Icon(Icons.clear_rounded, color: Colors.white),),//Icon(Icons.search),
                     errorBorder: InputBorder.none,
                   ),
                   style: Theme.of(context).inputDecorationTheme.labelStyle,
@@ -131,6 +144,7 @@ class _CBDataTableState extends State<CBDataTable> {
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(minWidth: constraints.minWidth),
                                       child: DataTable(
+
                                         showCheckboxColumn: false,
                                         columns: widget.headers,
                                         rows: _buildDataRow(model),

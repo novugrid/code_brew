@@ -14,7 +14,7 @@ abstract class PaginatedDataModel<T> {
     currentPage = data["current_page"] ?? 1;
     nextPage = data["next_page"] ?? 1;
     previousPage = data["previous_page"] ?? 1;
-    totalPage = data["total_page"] ?? 1;
+    totalPage = data["total_pages"];
     limit = data["limit"] ?? total;
     if (totalPage == null && limit != null) {
       totalPage = (total / limit).round();
