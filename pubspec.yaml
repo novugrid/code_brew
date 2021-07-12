@@ -2,7 +2,7 @@ name: code_brew
 description: A new Flutter package.
 version: 0.0.1
 author:
-homepage:
+homepage: www.novugrid.com
 
 environment:
   sdk: ">=2.6.0 <3.0.0"

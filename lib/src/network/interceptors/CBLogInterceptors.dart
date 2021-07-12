@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 
 class LoggingInterceptor extends Interceptor {
-  int _maxCharactersPerLine = 200;
-
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     print("--> ${options.method} ${options.path}");
@@ -20,7 +18,8 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print("<~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ${response.statusCode} ${response.requestOptions.uri} (${response.requestOptions.method})");
+    print(
+        "<~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ${response.statusCode} ${response.requestOptions.uri} (${response.requestOptions.method})");
     // String responseAsString = response.data.toString();
 
     print(json.encode(response.data));

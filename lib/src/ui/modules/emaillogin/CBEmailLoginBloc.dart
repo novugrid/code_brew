@@ -1,18 +1,15 @@
-import 'dart:async';
-
 import 'package:code_brew/code_brew.dart';
 import 'package:code_brew/src/network/ApiError.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CBEmailLoginBloc {
-
   String emailLoginUrl = "";
   EmailLoginParams emailLoginParams = EmailLoginParams();
 
   NetworkUtil _networkUtil;
-  BehaviorSubject<ApiCallStates> loginSubject = BehaviorSubject.seeded(ApiCallStates.IDLE);
+  BehaviorSubject<ApiCallStates> loginSubject =
+      BehaviorSubject.seeded(ApiCallStates.IDLE);
 
   // Data
   dynamic loginResponse;
@@ -20,7 +17,7 @@ class CBEmailLoginBloc {
   CBEmailLoginBloc() {
     _networkUtil = NetworkUtil();
   }
-  
+
   dispose() {
     loginSubject.close();
   }
@@ -38,10 +35,11 @@ class CBEmailLoginBloc {
     } on CBApiError catch (apiError) {
       loginSubject.addError(apiError);
       loginSubject.add(ApiCallStates.ERROR);
+    } catch (e) {
+      loginSubject.addError(e);
+      print(e.toString());
     }
-    
   }
-  
 }
 
 class EmailLoginParams {
