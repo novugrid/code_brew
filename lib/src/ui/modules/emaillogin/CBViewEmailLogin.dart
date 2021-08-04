@@ -9,7 +9,7 @@ import 'package:the_validator/the_validator.dart';
 class CBEmailLoginView extends StatefulWidget {
   final String url;
   final ValueChanged<dynamic> onCompleted;
-  final ValueChanged<dynamic> onError;
+  final VoidCallback onError;
   final VoidCallback onRecoverPressed;
 
   CBEmailLoginView({this.url, this.onCompleted, this.onError, this.onRecoverPressed});
@@ -47,7 +47,7 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
           ).show();
           // e.error.userMessage;
         } else {
-          widget.onError(e);
+          widget.onError();
         }
       });
 
