@@ -9,9 +9,10 @@ import 'package:the_validator/the_validator.dart';
 class CBEmailLoginView extends StatefulWidget {
   final String url;
   final ValueChanged<dynamic> onCompleted;
+  final ValueChanged<dynamic> onError;
   final VoidCallback onRecoverPressed;
 
-  CBEmailLoginView({this.url, this.onCompleted, this.onRecoverPressed});
+  CBEmailLoginView({this.url, this.onCompleted, this.onError, this.onRecoverPressed});
 
   @override
   State<StatefulWidget> createState() => _CBEmailLoginView();
@@ -45,26 +46,23 @@ class _CBEmailLoginView extends State<CBEmailLoginView> {
             showIcon: false,
           ).show();
           // e.error.userMessage;
+        } else {
+          widget.onError(e);
         }
       });
 
       // prefill
 //      emailController.text = "superadmin@gmail.com";
 //      passwordController.text = "password";
-
     });
   }
 
   submit() {
-
     if (_formKey.currentState.validate()) {
-
       bloc.emailLoginParams.email = emailController.text;
       bloc.emailLoginParams.password = passwordController.text;
       bloc.emailLogin();
-
     }
-
   }
 
   @override
