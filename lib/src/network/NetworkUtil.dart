@@ -7,44 +7,51 @@ import 'package:dio/dio.dart';
 enum ApiCallStates { IDLE, LOADING, SUCCESS, ERROR }
 
 class NetworkUtil {
-  Dio _getDioInstance() {
-    var dio = Dio(BaseOptions(
+  Dio dio;
+  static final NetworkUtil _instance = NetworkUtil._internal();
+
+  static NetworkUtil get instance => _instance;
+
+  NetworkUtil._internal() {
+    setupDio();
+  }
+  factory NetworkUtil() {
+    return _instance;
+  }
+
+  setupDio() {
+    dio = Dio(BaseOptions(
       connectTimeout: 30000,
       receiveTimeout: 30000,
     ));
     dio.interceptors.add(CBRequestInterceptor());
     dio.interceptors.add(LoggingInterceptor());
+  }
+
+  Dio _getDioInstance() {
     return dio;
   }
 
-  Future<Response> connectApi(String url, RequestMethod method,
-      {Map<String, dynamic> data, Map<String, dynamic> queryParams}) async {
-    String finalUrl = CodeBrewNetworkConfig.baseUrl.isEmpty
-        ? url
-        : CodeBrewNetworkConfig.baseUrl + url;
+  Future<Response> connectApi(String url, RequestMethod method, {Map<String, dynamic> data, Map<String, dynamic> queryParams}) async {
+    String finalUrl = CodeBrewNetworkConfig.baseUrl.isEmpty ? url : CodeBrewNetworkConfig.baseUrl + url;
 
     Response response;
     try {
       switch (method) {
         case RequestMethod.get:
-          response = await _getDioInstance()
-              .get(finalUrl, queryParameters: queryParams);
+          response = await _getDioInstance().get(finalUrl, queryParameters: queryParams);
           break;
         case RequestMethod.post:
-          response = await _getDioInstance()
-              .post(finalUrl, data: data, queryParameters: queryParams);
+          response = await _getDioInstance().post(finalUrl, data: data, queryParameters: queryParams);
           break;
         case RequestMethod.put:
-          response = await _getDioInstance()
-              .put(finalUrl, data: data, queryParameters: queryParams);
+          response = await _getDioInstance().put(finalUrl, data: data, queryParameters: queryParams);
           break;
         case RequestMethod.patch:
-          response = await _getDioInstance()
-              .patch(finalUrl, data: data, queryParameters: queryParams);
+          response = await _getDioInstance().patch(finalUrl, data: data, queryParameters: queryParams);
           break;
         case RequestMethod.delete:
-          response = await _getDioInstance()
-              .delete(finalUrl, queryParameters: queryParams);
+          response = await _getDioInstance().delete(finalUrl, queryParameters: queryParams);
           break;
       }
       return response;
