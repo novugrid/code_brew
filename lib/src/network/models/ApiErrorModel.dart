@@ -1,6 +1,4 @@
-
 class ApiErrorModel {
-
   int code;
   Error error;
   String message;
@@ -14,21 +12,19 @@ class ApiErrorModel {
   });
 
   factory ApiErrorModel.fromJson(Map<String, dynamic> json) => ApiErrorModel(
-    code: json["code"],
-    error: Error.fromJson(json["error"]),
-    message: json["message"],
-    success: json["success"],
-  );
+        code: json["code"],
+        error: Error.fromJson(json["error"]),
+        message: json["message"],
+        success: json["success"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "code": code,
-    "error": error.toJson(),
-    "message": message,
-    "success": success,
-  };
-
+        "code": code,
+        "error": error.toJson(),
+        "message": message,
+        "success": success,
+      };
 }
-
 
 class Error {
   String devMessage;
@@ -50,22 +46,22 @@ class Error {
   });
 
   factory Error.fromJson(Map<String, dynamic> json) => Error(
-    devMessage: json["devMessage"],
-    possibleSolution: json["possibleSolution"],
-    exceptionError: json["exceptionError"],
-    validationError: List<dynamic>.from(json["validationError"].map((x) => x)),
-    userMessage: json["userMessage"],
-    errorCode: json["errorCode"],
-    statusCode: json["statusCode"],
-  );
+        devMessage: json["devMessage"],
+        possibleSolution: json["possibleSolution"],
+        exceptionError: json["exceptionError"],
+        validationError: List<dynamic>.from(json["validationError"]?.map((x) => x) ?? []),
+        userMessage: json["userMessage"],
+        errorCode: json["errorCode"],
+        statusCode: json["statusCode"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "devMessage": devMessage,
-    "possibleSolution": possibleSolution,
-    "exceptionError": exceptionError,
-    "validationError": List<dynamic>.from(validationError.map((x) => x)),
-    "userMessage": userMessage,
-    "errorCode": errorCode,
-    "statusCode": statusCode,
-  };
+        "devMessage": devMessage,
+        "possibleSolution": possibleSolution,
+        "exceptionError": exceptionError,
+        "validationError": List<dynamic>.from(validationError.map((x) => x)),
+        "userMessage": userMessage,
+        "errorCode": errorCode,
+        "statusCode": statusCode,
+      };
 }
