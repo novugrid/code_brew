@@ -19,6 +19,7 @@ class UITextFormField extends StatefulWidget {
   final int maxLines;
   final bool enabled;
   final List<TextInputFormatter> inputFormatters;
+  final TextInputAction textInputAction;
 
   UITextFormField({
     this.controller,
@@ -36,6 +37,7 @@ class UITextFormField extends StatefulWidget {
     this.maxLines = 1,
     this.enabled = true,
     this.inputFormatters,
+    this.textInputAction = TextInputAction.done,
   });
 
   @override
@@ -58,12 +60,10 @@ class _UITextFormField extends State<UITextFormField> {
       decoration: InputDecoration(
         hintText: widget.hint,
         // hintStyle: TextStyle(color: hintColor),
-        border: InputBorder
-            .none, // TODO(Lekan): Add improvements to this in version 1.2
+        border: InputBorder.none, // TODO(Lekan): Add improvements to this in version 1.2
         contentPadding: EdgeInsets.zero,
 
         // isDense: true,
-
       ),
       maxLines: widget.maxLines,
       keyboardType: widget.keyboardType,
@@ -71,7 +71,7 @@ class _UITextFormField extends State<UITextFormField> {
       onChanged: widget.onChanged,
       enabled: widget.enabled,
       inputFormatters: widget.inputFormatters ?? [],
-      textInputAction: TextInputAction.done,
+      textInputAction: widget.textInputAction,
     );
 
     Widget container;
@@ -123,11 +123,9 @@ class _UITextFormField extends State<UITextFormField> {
     Border border = Border();
     BorderRadius borderRadius = BorderRadius.zero;
     if (widget.border == null) {
-      border =
-          Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
+      border = Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
       if (theme.inputDecorationTheme.border.isOutline) {
-        OutlineInputBorder outlineInputBorder =
-        theme.inputDecorationTheme.border as OutlineInputBorder;
+        OutlineInputBorder outlineInputBorder = theme.inputDecorationTheme.border as OutlineInputBorder;
         borderRadius = outlineInputBorder.borderRadius;
       }
     } else {
