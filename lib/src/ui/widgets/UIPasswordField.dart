@@ -1,7 +1,8 @@
 import 'package:code_brew/code_brew.dart';
-import 'package:flutter/material.dart';
-import 'package:the_validator/the_validator.dart';
 import 'package:code_brew/src/ui/theme/CodeBrewTheme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:the_validator/the_validator.dart';
 
 class UIPasswordField extends StatefulWidget {
   final TextEditingController passwordController;
@@ -15,6 +16,9 @@ class UIPasswordField extends StatefulWidget {
   final String hint;
   final FormFieldValidator<String> validator;
   final VoidCallback onEditingComplete;
+  final TextInputType keyboardType;
+  final List<TextInputFormatter> inputFormatters;
+  final TextInputAction textInputAction;
 
   UIPasswordField({
     this.passwordController,
@@ -27,7 +31,10 @@ class UIPasswordField extends StatefulWidget {
     this.hintColor,
     this.hint = "",
     this.validator,
-    this.onEditingComplete
+    this.onEditingComplete,
+    this.keyboardType = TextInputType.text,
+    this.inputFormatters,
+    this.textInputAction = TextInputAction.done,
   });
 
   @override
@@ -53,14 +60,11 @@ class _UIPasswordField extends State<UIPasswordField> {
       hintColor = Colors.white24;
     }
 
-
     final ThemeData theme = Theme.of(context);
 
     Widget current = TextFormField(
       controller: widget.passwordController,
-      autovalidate: widget.passwordController != null
-          ? widget.passwordController.text.isNotEmpty
-          : false,
+      autovalidate: widget.passwordController != null ? widget.passwordController.text.isNotEmpty : false,
       style: CodeBrewTheme.textFieldStyle,
       decoration: InputDecoration(
         hintText: widget.hint,
@@ -78,30 +82,31 @@ class _UIPasswordField extends State<UIPasswordField> {
             width: 18,
             height: 18,
             padding: const EdgeInsets.only(right: 18.0),
-            child: Icon(
-                obscurePassword ? Icons.visibility_off : Icons.visibility,
-                color: Colors.white,
-                size: 18),
+            child: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility, color: Colors.white, size: 18),
           ),
         ),
       ),
       obscureText: obscurePassword,
       //textAlign: TextAlign.left,
-      validator: widget.validator ?? FieldValidator.password(
-          minLength: 8,
-          shouldContainNumber: true,
-          shouldContainCapitalLetter: true,
-          shouldContainSpecialChars: true,
-          errorMessage: "Password must match the required format",
-          onNumberNotPresent: () {
-            return "Password must contain number";
-          },
-          onSpecialCharsNotPresent: () {
-            return "Password must contain special characters";
-          },
-          onCapitalLetterNotPresent: () {
-            return "Password must contain capital letters";
-          }),
+      inputFormatters: widget.inputFormatters ?? [],
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      validator: widget.validator ??
+          FieldValidator.password(
+              minLength: 8,
+              shouldContainNumber: true,
+              shouldContainCapitalLetter: true,
+              shouldContainSpecialChars: true,
+              errorMessage: "Password must match the required format",
+              onNumberNotPresent: () {
+                return "Password must contain number";
+              },
+              onSpecialCharsNotPresent: () {
+                return "Password must contain special characters";
+              },
+              onCapitalLetterNotPresent: () {
+                return "Password must contain capital letters";
+              }),
       onChanged: (val) {},
       onEditingComplete: widget.onEditingComplete ?? () {},
     );
@@ -153,11 +158,9 @@ class _UIPasswordField extends State<UIPasswordField> {
     Border border = Border();
     BorderRadius borderRadius = BorderRadius.zero;
     if (widget.border == null) {
-      border =
-          Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
+      border = Border.fromBorderSide(theme.inputDecorationTheme.border.borderSide);
       if (theme.inputDecorationTheme.border.isOutline) {
-        OutlineInputBorder outlineInputBorder =
-        theme.inputDecorationTheme.border as OutlineInputBorder;
+        OutlineInputBorder outlineInputBorder = theme.inputDecorationTheme.border as OutlineInputBorder;
         borderRadius = outlineInputBorder.borderRadius;
       }
     } else {
