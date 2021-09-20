@@ -112,7 +112,7 @@ class ImageSourceChooser extends StatelessWidget {
                 : Container(),
             Text(
               title,
-              style: Theme.of(context).textTheme.body1.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.bodyText1.copyWith(fontWeight: FontWeight.bold),
             )
           ],
         ),
