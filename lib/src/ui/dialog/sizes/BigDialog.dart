@@ -42,8 +42,7 @@ class BaseDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new AnimatedPadding(
-      padding: MediaQuery.of(context).viewInsets +
-          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+      padding: MediaQuery.of(context).viewInsets + const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
       duration: insetAnimationDuration,
       curve: insetAnimationCurve,
       child: new MediaQuery.removeViewInsets(
@@ -59,11 +58,7 @@ class BaseDialog extends StatelessWidget {
               elevation: 24.0,
               color: Colors.transparent,
               type: MaterialType.card,
-              child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: _getColor(context)),
-                  child: child),
+              child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color: _getColor(context)), child: child),
             ),
           ),
         ),
@@ -139,7 +134,7 @@ class BigDialog extends StatelessWidget {
       body.add(new Padding(
           padding: titlePadding,
           child: new DefaultTextStyle(
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
             child: new Semantics(namesRoute: true, child: title),
           )));
     } else {
@@ -149,8 +144,7 @@ class BigDialog extends StatelessWidget {
           break;
         case TargetPlatform.android:
         case TargetPlatform.fuchsia:
-          label =
-              semanticLabel ?? MaterialLocalizations.of(context)?.dialogLabel;
+          label = semanticLabel ?? MaterialLocalizations.of(context)?.dialogLabel;
           break;
         // case TargetPlatform.macOS:
         //  break;
